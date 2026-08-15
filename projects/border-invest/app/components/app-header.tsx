@@ -44,9 +44,15 @@ export function AppHeader() {
             </Link>
             <Link
               className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-              href="/#method"
+              href="/how-it-works"
             >
-              Our method
+              How it works
+            </Link>
+            <Link
+              className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              href="/about"
+            >
+              About
             </Link>
             <Link
               className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
@@ -101,6 +107,12 @@ export function AppHeader() {
               onClick={() => setMenuOpen(false)}
             >
               Projects
+            </MobileLink>
+            <MobileLink href="/how-it-works" onClick={() => setMenuOpen(false)}>
+              How it works
+            </MobileLink>
+            <MobileLink href="/about" onClick={() => setMenuOpen(false)}>
+              About
             </MobileLink>
             <MobileLink href="/portfolio" onClick={() => setMenuOpen(false)}>
               Portfolio

@@ -18,8 +18,9 @@ export function AppFooter() {
             </p>
             <div className="mt-4 grid gap-3 text-sm">
               <Link href="/#opportunities">Projects</Link>
+              <Link href="/how-it-works">How it works</Link>
+              <Link href="/about">About Aether</Link>
               <Link href="/portfolio">Portfolio</Link>
-              <Link href="/#method">Our method</Link>
             </div>
           </div>
           <div>

@@ -37,10 +37,10 @@ export default function Home() {
                 Explore projects
               </Link>
               <Link
-                href="#method"
+                href="/how-it-works"
                 className="inline-flex min-h-11 items-center border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
-                Our method
+                How it works
               </Link>
             </div>
           </div>
