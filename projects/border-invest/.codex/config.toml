@@ -1,0 +1,4 @@
+[mcp_servers.helius]
+command = "npx"
+args = ["-y", "helius-mcp@latest"]
+env_vars = ["HELIUS_API_KEY"]
