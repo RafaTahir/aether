@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { InvestmentProject } from "@/src/domain/project";
 import { formatCompactCurrency, formatPercent } from "@/src/lib/format-number";
+import { SaveProjectButton } from "./save-project-button";
 
 type ProjectCardProps = {
   project: InvestmentProject;
@@ -13,7 +14,7 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
 
   if (variant === "feature") {
     return (
-      <article className="project-link group grid overflow-hidden border bg-card lg:grid-cols-2">
+      <article className="project-link group relative grid overflow-hidden border bg-card lg:grid-cols-2">
         <div className="relative min-h-80 overflow-hidden lg:min-h-full">
           <Image
             src={project.image}
@@ -26,6 +27,9 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
           <span className="absolute left-4 top-4 bg-card px-3 py-2 text-xs font-semibold">
             Flagship brief
           </span>
+          <div className="absolute right-4 top-4">
+            <SaveProjectButton projectSlug={project.slug} />
+          </div>
         </div>
         <div className="flex flex-col p-6 md:p-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -37,7 +41,16 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
             {project.summary}
           </p>
-          <dl className="mt-8 grid grid-cols-3 gap-4 border-y py-5">
+          <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
+            <span className="bg-secondary px-2 py-1">
+              {project.fundingModel}
+            </span>
+            <span className="bg-secondary px-2 py-1">{project.status}</span>
+            <span className="bg-secondary px-2 py-1">
+              Grade {project.riskGrade}
+            </span>
+          </div>
+          <dl className="mt-6 grid grid-cols-3 gap-4 border-y py-5">
             <Metric
               label="Target"
               value={formatCompactCurrency(project.targetUsd)}
@@ -63,7 +76,10 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
   }
 
   return (
-    <article className="project-link group border-t">
+    <article className="project-link group relative border-t">
+      <div className="absolute right-0 top-6 z-10">
+        <SaveProjectButton projectSlug={project.slug} />
+      </div>
       <Link
         href={`/projects/${project.slug}`}
         className="grid min-h-44 gap-5 py-6 focus-visible:ring-2 focus-visible:ring-ring lg:grid-cols-12 lg:items-center"
@@ -78,7 +94,7 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
           />
         </div>
         <div className="lg:col-span-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          <p className="pr-20 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             {project.country} / {project.operatorType}
           </p>
           <h3 className="mt-3 font-serif text-3xl font-medium leading-none tracking-tight">
@@ -87,6 +103,12 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             {project.summary}
           </p>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold">
+            <span className="bg-secondary px-2 py-1">
+              {project.fundingModel}
+            </span>
+            <span className="bg-secondary px-2 py-1">{project.status}</span>
+          </div>
         </div>
         <dl className="grid grid-cols-2 gap-4 lg:col-span-4 lg:grid-cols-3">
           <Metric

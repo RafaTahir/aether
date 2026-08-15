@@ -13,3 +13,36 @@ export type Commitment = {
   status: CommitmentStatus;
   transactionSignature?: string;
 };
+
+export type SandboxCommitment = {
+  id: string;
+  projectSlug: string;
+  projectName: string;
+  walletAddress: string;
+  amountUsd: number;
+  createdAt: string;
+  status: "sandbox_recorded";
+};
+
+export type DemoEligibilityRecord = {
+  status: "demo_eligible";
+  country: string;
+  participantType: "individual" | "organization";
+  confirmedAt: string;
+};
+
+export type ProjectDraft = {
+  id: string;
+  projectName: string;
+  operatorName: string;
+  operatorType:
+    "Individual" | "Company" | "Cooperative" | "Public-interest entity";
+  country: string;
+  sector: string;
+  fundingCadence: "One-time project" | "Continuous program";
+  fundingModel: "Revenue share" | "Grant" | "Debt" | "Equity";
+  targetUsd: number;
+  summary: string;
+  createdAt: string;
+  status: "draft";
+};

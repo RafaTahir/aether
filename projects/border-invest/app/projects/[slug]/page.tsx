@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/src/data/projects";
+import { SandboxCommitmentPanel } from "../../components/sandbox-commitment-panel";
+import { SaveProjectButton } from "../../components/save-project-button";
+import { ShareProjectButton } from "../../components/share-project-button";
 import {
   formatCompactCurrency,
   formatDetailedCurrency,
@@ -59,6 +62,21 @@ export default async function ProjectPage({
               className="object-cover"
             />
           </div>
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-2 text-xs font-semibold">
+              <span className="bg-secondary px-2 py-1">{project.status}</span>
+              <span className="bg-secondary px-2 py-1">
+                {project.fundingModel}
+              </span>
+              <span className="bg-secondary px-2 py-1">
+                Updated {project.lastUpdated}
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <SaveProjectButton projectSlug={project.slug} />
+              <ShareProjectButton />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -106,6 +124,31 @@ export default async function ProjectPage({
                     0{index + 1}
                   </span>
                   <span className="text-sm leading-6">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="grid gap-6 border-b py-12 md:grid-cols-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Project room
+              </p>
+              <h2 className="mt-3 font-serif text-3xl font-medium">Updates</h2>
+            </div>
+            <ol className="md:col-span-2">
+              {project.updates.map((update) => (
+                <li
+                  key={`${update.date}-${update.title}`}
+                  className="border-t py-5 first:border-t-0"
+                >
+                  <p className="font-mono text-xs tabular-nums text-muted-foreground">
+                    {update.date}
+                  </p>
+                  <h3 className="mt-2 font-semibold">{update.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    {update.body}
+                  </p>
                 </li>
               ))}
             </ol>
@@ -197,6 +240,7 @@ export default async function ProjectPage({
               Demo only. No investment, ownership right, or expected return is
               offered. Wallet connection does not establish legal eligibility.
             </p>
+            <SandboxCommitmentPanel project={project} />
           </div>
         </aside>
       </div>

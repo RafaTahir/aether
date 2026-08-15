@@ -4,6 +4,17 @@ export type ProjectMilestone = {
   releasePercent: number;
 };
 
+export type ProjectStatus =
+  "Published" | "In progress" | "Funding complete" | "Completed";
+
+export type FundingModel = "Revenue share" | "Grant" | "Debt" | "Equity";
+
+export type ProjectUpdate = {
+  date: string;
+  title: string;
+  body: string;
+};
+
 export type InvestmentProject = {
   id: string;
   slug: string;
@@ -15,6 +26,9 @@ export type InvestmentProject = {
   operatorType:
     "Individual" | "Company" | "Cooperative" | "Public-interest entity";
   fundingCadence: "One-time project" | "Continuous program";
+  fundingModel: FundingModel;
+  status: ProjectStatus;
+  lastUpdated: string;
   summary: string;
   description: string;
   image: string;
@@ -28,6 +42,7 @@ export type InvestmentProject = {
   impactValue: string;
   impactLabel: string;
   verificationStatus: string;
+  updates: ProjectUpdate[];
   useOfFunds: string[];
   milestones: ProjectMilestone[];
   risks: string[];

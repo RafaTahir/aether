@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ProjectCard } from "./components/project-card";
+import { Suspense } from "react";
+import { ProjectDiscovery } from "./components/project-discovery";
 import { projects } from "@/src/data/projects";
 import { formatCompactCurrency } from "@/src/lib/format-number";
 
@@ -57,32 +58,9 @@ export default function Home() {
         </dl>
       </section>
 
-      <section
-        id="opportunities"
-        className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 md:px-6 lg:px-8"
-      >
-        <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Current briefs
-            </p>
-            <h2 className="mt-4 font-serif text-4xl font-medium tracking-tight md:text-6xl">
-              Capital tied to visible work.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-6 text-muted-foreground lg:col-span-5">
-            Each listing starts with an operator, a defined use of funds,
-            verification evidence, release milestones, and plain-language risks.
-            Financial models vary by project and jurisdiction.
-          </p>
-        </div>
-        <ProjectCard project={projects[0]} variant="feature" />
-        <div className="mt-10">
-          {projects.slice(1).map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </section>
+      <Suspense fallback={<DiscoveryFallback />}>
+        <ProjectDiscovery projects={projects} />
+      </Suspense>
 
       <section id="method" className="border-y bg-foreground text-background">
         <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 lg:px-8">
@@ -151,10 +129,10 @@ export default function Home() {
               each release, and terms that comply with every market involved.
             </p>
             <Link
-              href="/onboarding"
+              href="/projects/submit"
               className="mt-7 inline-flex min-h-11 items-center gap-4 border-b border-foreground text-sm font-semibold focus-visible:ring-2 focus-visible:ring-ring"
             >
-              See what readiness requires <span aria-hidden="true">-&gt;</span>
+              Submit a project <span aria-hidden="true">-&gt;</span>
             </Link>
           </div>
         </div>
@@ -181,5 +159,14 @@ function Proof({ label, value }: { label: string; value: string }) {
         {value}
       </dd>
     </div>
+  );
+}
+
+function DiscoveryFallback() {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-20 md:px-6 lg:px-8">
+      <div className="h-12 w-72 animate-pulse bg-secondary" />
+      <div className="mt-8 h-72 animate-pulse bg-secondary" />
+    </section>
   );
 }

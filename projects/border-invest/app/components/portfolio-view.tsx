@@ -1,0 +1,151 @@
+"use client";
+
+import Link from "next/link";
+import type { InvestmentProject } from "@/src/domain/project";
+import type { SandboxCommitment } from "@/src/domain/investment";
+import { formatDetailedCurrency } from "@/src/lib/format-number";
+import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
+import { ProjectCard } from "./project-card";
+
+export function PortfolioView({ projects }: { projects: InvestmentProject[] }) {
+  const [savedProjects, , savedReady] = useAetherStorage<string[]>(
+    AETHER_STORAGE_KEYS.savedProjects,
+    []
+  );
+  const [commitments, , commitmentsReady] = useAetherStorage<
+    SandboxCommitment[]
+  >(AETHER_STORAGE_KEYS.commitments, []);
+  const saved = projects.filter((project) =>
+    savedProjects.includes(project.slug)
+  );
+  const ready = savedReady && commitmentsReady;
+
+  if (!ready) {
+    return (
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="h-44 animate-pulse bg-secondary" />
+        <div className="h-44 animate-pulse bg-secondary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-12 grid gap-16 lg:grid-cols-12">
+      <section className="lg:col-span-7">
+        <div className="flex items-end justify-between gap-4 border-b pb-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Watchlist
+            </p>
+            <h2 className="mt-2 font-serif text-3xl font-medium">
+              Saved project rooms
+            </h2>
+          </div>
+          <span className="font-mono text-sm tabular-nums text-muted-foreground">
+            {saved.length}
+          </span>
+        </div>
+        {saved.length === 0 ? (
+          <EmptyState
+            title="No saved projects yet"
+            body="Save a project brief to keep it close while you compare operators, risks, and milestones."
+            href="/#opportunities"
+            label="Browse project briefs"
+          />
+        ) : (
+          <div className="mt-6">
+            {saved.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="lg:col-span-5">
+        <div className="flex items-end justify-between gap-4 border-b pb-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Sandbox activity
+            </p>
+            <h2 className="mt-2 font-serif text-3xl font-medium">
+              Demo commitments
+            </h2>
+          </div>
+          <span className="font-mono text-sm tabular-nums text-muted-foreground">
+            {commitments.length}
+          </span>
+        </div>
+        {commitments.length === 0 ? (
+          <EmptyState
+            title="Nothing recorded"
+            body="A sandbox commitment will appear here after you complete demo eligibility and choose a project amount."
+            href="/onboarding"
+            label="Check demo eligibility"
+          />
+        ) : (
+          <div className="mt-6 divide-y border-y">
+            {commitments.map((commitment) => (
+              <div key={commitment.id} className="py-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      {commitment.projectName}
+                    </p>
+                    <p className="mt-1 font-mono text-xs text-muted-foreground">
+                      {shorten(commitment.walletAddress)}
+                    </p>
+                  </div>
+                  <span className="bg-secondary px-2 py-1 text-[10px] font-semibold uppercase tracking-wider">
+                    Sandbox
+                  </span>
+                </div>
+                <p className="mt-4 font-mono text-xl font-medium tabular-nums">
+                  {formatDetailedCurrency(commitment.amountUsd)}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Recorded {formatDate(commitment.createdAt)}. No funds moved.
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function EmptyState({
+  title,
+  body,
+  href,
+  label,
+}: {
+  title: string;
+  body: string;
+  href: string;
+  label: string;
+}) {
+  return (
+    <div className="mt-6 border border-dashed p-6">
+      <h3 className="font-serif text-2xl font-medium">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p>
+      <Link
+        href={href}
+        className="mt-5 inline-flex min-h-10 items-center bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
+        {label}
+      </Link>
+    </div>
+  );
+}
+
+function shorten(value: string) {
+  return value.length > 12
+    ? `${value.slice(0, 5)}...${value.slice(-4)}`
+    : value;
+}
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+    new Date(value)
+  );
+}

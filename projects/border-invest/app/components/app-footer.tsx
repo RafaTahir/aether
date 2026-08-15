@@ -18,6 +18,7 @@ export function AppFooter() {
             </p>
             <div className="mt-4 grid gap-3 text-sm">
               <Link href="/#opportunities">Projects</Link>
+              <Link href="/portfolio">Portfolio</Link>
               <Link href="/#method">Our method</Link>
             </div>
           </div>
@@ -27,7 +28,8 @@ export function AppFooter() {
             </p>
             <div className="mt-4 grid gap-3 text-sm">
               <Link href="/onboarding">Project readiness</Link>
-              <Link href="/onboarding">Investor eligibility</Link>
+              <Link href="/projects/submit">Submit a project</Link>
+              <Link href="/operator">Operator workspace</Link>
             </div>
           </div>
         </div>

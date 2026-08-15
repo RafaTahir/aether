@@ -120,7 +120,7 @@ export function WalletButton() {
             )}
             {error != null && (
               <p className="mt-2 text-xs text-destructive">
-                {error instanceof Error ? error.message : String(error)}
+                {describeWalletError(error)}
               </p>
             )}
           </div>
@@ -197,4 +197,16 @@ export function WalletButton() {
       )}
     </div>
   );
+}
+
+function describeWalletError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  const normalized = message.toLowerCase();
+  if (normalized.includes("reject") || normalized.includes("cancel"))
+    return "Connection cancelled. Try again when you are ready.";
+  if (normalized.includes("not found") || normalized.includes("not installed"))
+    return "No compatible wallet was found. Install a Solana wallet and try again.";
+  if (normalized.includes("locked"))
+    return "Unlock your wallet, then try connecting again.";
+  return "The wallet could not connect. Check the extension and try again.";
 }

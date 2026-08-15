@@ -21,6 +21,11 @@ Open `http://localhost:3000`.
 - Next.js App Router, TypeScript, and Tailwind CSS
 - Solana Wallet Standard integration through `@solana/kit`
 - Fictional project discovery and diligence pages
+- Searchable, URL-shareable project filters and saved project rooms
+- Local operator draft intake and operator workspace
+- Local participant portfolio with sandbox commitment records
+- Demo eligibility flow that intentionally collects no identity data
+- Project update timelines and shareable project briefs
 - Devnet-only cluster guardrail
 - Eligibility, commitment, and escrow service boundaries
 - Codex instructions in `AGENTS.md`
@@ -35,3 +40,7 @@ Open `http://localhost:3000`.
 - Custom tokens or Solana programs
 
 These features require validated legal and product requirements before implementation.
+
+## Prototype storage
+
+Saved projects, demo eligibility, operator drafts, and sandbox commitments use browser `localStorage`. They are not synced to a server and are not evidence of identity, eligibility, ownership, investment, or payment.

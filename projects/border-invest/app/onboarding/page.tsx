@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EligibilityFlow } from "../components/eligibility-flow";
 
 const investorChecks = [
   [
@@ -70,6 +71,23 @@ export default function OnboardingPage() {
             checks={projectChecks}
           />
         </div>
+        <div className="mt-16 grid gap-8 lg:grid-cols-12 lg:items-start">
+          <div className="lg:col-span-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Try the flow
+            </p>
+            <h2 className="mt-4 font-serif text-4xl font-medium">
+              A small step before a large one.
+            </h2>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">
+              In production, this step would connect to approved identity and
+              offering-rule providers. Here it stays local and fictional.
+            </p>
+          </div>
+          <div className="lg:col-span-8">
+            <EligibilityFlow />
+          </div>
+        </div>
       </section>
 
       <section className="border-y bg-foreground text-background">
@@ -90,10 +108,10 @@ export default function OnboardingPage() {
               test Solana devnet discovery.
             </p>
             <Link
-              href="/"
+              href="/projects/submit"
               className="mt-7 inline-flex min-h-11 items-center gap-4 border-b border-background text-sm font-semibold focus-visible:ring-2 focus-visible:ring-background"
             >
-              Return to project briefs <span aria-hidden="true">-&gt;</span>
+              Submit a project <span aria-hidden="true">-&gt;</span>
             </Link>
           </div>
         </div>

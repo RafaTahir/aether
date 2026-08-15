@@ -11,6 +11,9 @@ export const projects: InvestmentProject[] = [
     operator: "Agos Rural Energy Cooperative",
     operatorType: "Cooperative",
     fundingCadence: "One-time project",
+    fundingModel: "Revenue share",
+    status: "Published",
+    lastUpdated: "2026-08-12",
     summary:
       "Replace diesel irrigation pumps with a shared solar network serving six rice-farming cooperatives.",
     description:
@@ -27,6 +30,18 @@ export const projects: InvestmentProject[] = [
     impactValue: "420 ha",
     impactLabel: "farmland served",
     verificationStatus: "Diligence review complete",
+    updates: [
+      {
+        date: "2026-08-12",
+        title: "Engineering review completed",
+        body: "Site plans and the preliminary equipment schedule were reviewed for the six proposed pump sites.",
+      },
+      {
+        date: "2026-07-28",
+        title: "Cooperative agreements collected",
+        body: "All six participating cooperatives submitted signed participation agreements for the demo brief.",
+      },
+    ],
     useOfFunds: [
       "Six solar pump and battery systems",
       "Metering, installation, and grid works",
@@ -68,6 +83,9 @@ export const projects: InvestmentProject[] = [
     operator: "Pesisir Lestari Foundation",
     operatorType: "Public-interest entity",
     fundingCadence: "Continuous program",
+    fundingModel: "Grant",
+    status: "In progress",
+    lastUpdated: "2026-08-08",
     summary:
       "Restore working mangrove coastlines while funding local nurseries and long-term monitoring teams.",
     description:
@@ -84,6 +102,18 @@ export const projects: InvestmentProject[] = [
     impactValue: "85 ha",
     impactLabel: "coastline restored",
     verificationStatus: "Field evidence verified",
+    updates: [
+      {
+        date: "2026-08-08",
+        title: "First cohort mapped",
+        body: "The initial restoration cohort and monitoring points were added to the field plan.",
+      },
+      {
+        date: "2026-07-15",
+        title: "Nursery partners confirmed",
+        body: "Two local nurseries were added to the fictional delivery network for the first planting period.",
+      },
+    ],
     useOfFunds: [
       "Community seedling nurseries",
       "Restoration labor and transport",
@@ -125,6 +155,9 @@ export const projects: InvestmentProject[] = [
     operator: "Dr. Mali Vongsa",
     operatorType: "Individual",
     fundingCadence: "Continuous program",
+    fundingModel: "Grant",
+    status: "Published",
+    lastUpdated: "2026-08-03",
     summary:
       "Extend scheduled maternal and primary-care visits to remote villages through a locally operated mobile clinic.",
     description:
@@ -141,6 +174,13 @@ export const projects: InvestmentProject[] = [
     impactValue: "18 villages",
     impactLabel: "on the first route",
     verificationStatus: "Operator review complete",
+    updates: [
+      {
+        date: "2026-08-03",
+        title: "Route plan reviewed",
+        body: "The first 18-village route plan was reviewed against the fictional vehicle and staffing schedule.",
+      },
+    ],
     useOfFunds: [
       "Mobile clinic vehicle and fit-out",
       "Portable diagnostic equipment",
@@ -182,6 +222,9 @@ export const projects: InvestmentProject[] = [
     operator: "Lantern Works Ltd.",
     operatorType: "Company",
     fundingCadence: "One-time project",
+    fundingModel: "Revenue share",
+    status: "Published",
+    lastUpdated: "2026-07-30",
     summary:
       "Add recycled-fiber cutting and quality-control capacity for contracted hospitality uniform orders.",
     description:
@@ -198,6 +241,18 @@ export const projects: InvestmentProject[] = [
     impactValue: "34 roles",
     impactLabel: "retained or created",
     verificationStatus: "Buyer contracts reviewed",
+    updates: [
+      {
+        date: "2026-07-30",
+        title: "Buyer sample accepted",
+        body: "A fictional hospitality buyer accepted the first recycled-fiber uniform sample for the project brief.",
+      },
+      {
+        date: "2026-07-11",
+        title: "Supplier diligence added",
+        body: "The equipment supplier and delivery schedule were added to the review record.",
+      },
+    ],
     useOfFunds: [
       "Automated cutting equipment",
       "Recycled-fiber inventory",

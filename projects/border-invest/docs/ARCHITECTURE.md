@@ -4,6 +4,8 @@
 
 The current application proves discovery, wallet connection, project diligence, and system boundaries on Solana devnet. It does not offer securities or accept funds.
 
+The current prototype also exercises four local-only workflows: URL-backed discovery filters, saved project rooms, operator draft intake, and sandbox commitment records. These are deliberately browser-local until authentication, a database, and compliance providers exist.
+
 ## Production Context
 
 ```text
@@ -68,3 +70,12 @@ Phase 1 uses Wallet Standard, `@solana/kit`, and devnet. A production design sho
 - Select licensed KYC/AML, broker/portal, custody, and payment partners.
 - Decide whether milestone escrow can use an existing audited program.
 - Define cancellation, refund, default, dispute, and recovery behavior.
+
+## Prototype Routes
+
+- `/`: project discovery with shareable filters
+- `/projects/[slug]`: project room, updates, risks, save/share, and no-funds sandbox action
+- `/portfolio`: saved projects and local sandbox activity
+- `/onboarding`: demo eligibility flow with no identity collection
+- `/projects/submit`: local operator draft intake
+- `/operator`: local operator workspace for saved drafts
