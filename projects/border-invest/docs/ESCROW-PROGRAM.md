@@ -1,6 +1,6 @@
 # Aether Escrow Program
 
-The first custom Solana program is a narrowly scoped milestone escrow for a devnet demonstration. It is deployed to devnet but not connected to the frontend. It is not a securities contract and does not encode revenue share, equity, investment returns, or identity eligibility.
+The first custom Solana program is a narrowly scoped milestone escrow for a devnet demonstration. It is deployed to devnet and the frontend has a guarded deposit builder for a configured test escrow. It is not a securities contract and does not encode revenue share, equity, investment returns, or identity eligibility.
 
 ## What It Guarantees
 
@@ -19,7 +19,7 @@ The first custom Solana program is a narrowly scoped milestone escrow for a devn
 - It does not calculate revenue, returns, taxes, or ownership.
 - It does not resolve disputes or judge milestone evidence.
 - It is not audited and is not ready for mainnet or real funds.
-- The current frontend still records sandbox commitments locally and does not call the program.
+- The project-room frontend can call `deposit` when the three `NEXT_PUBLIC_AETHER_ESCROW_*` variables are configured. Without them it shows the local sandbox boundary. The frontend does not initialize escrows or release milestones; those remain operator/admin actions.
 
 ## Devnet Smoke Result
 
@@ -29,6 +29,18 @@ On 2026-08-17, the deployed program passed a disposable-token smoke run:
 - Emergency scenario: deposited 50 test tokens, paused the escrow, and refunded the full 50.
 
 The smoke client is `aether-contracts/scripts/smoke.ts`. Its temporary mint keypair was kept outside the repository and removed after the run.
+
+## Frontend Configuration
+
+To enable the devnet deposit panel for a specific project room, set:
+
+```env
+NEXT_PUBLIC_AETHER_ESCROW_ADDRESS=...
+NEXT_PUBLIC_AETHER_ESCROW_MINT=...
+NEXT_PUBLIC_AETHER_ESCROW_DECIMALS=6
+```
+
+The connected wallet must already hold the configured test mint. The panel creates its associated token account if needed, shows the instruction context, asks the wallet to sign, confirms the transaction, and links to Solana Explorer.
 
 ## Build Walkthrough
 
@@ -50,4 +62,4 @@ Authority: 23jEz9Fs2cUomTRaC6WFVYgfWnhphixsLT9BnvXosFqE
 
 ## Next Contract Milestone
 
-Publish or bundle the generated IDL, add explicit frontend instruction builders, and keep the current UI in sandbox mode until a user-facing devnet flow has transaction previews, status timelines, and a security review.
+Configure a dedicated demo escrow and test mint in Vercel, distribute test tokens to a demo wallet, and run the full browser flow. Keep real investment flows disabled until transaction previews, status timelines, and a security review are complete.

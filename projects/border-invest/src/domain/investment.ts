@@ -20,8 +20,12 @@ export type SandboxCommitment = {
   projectName: string;
   walletAddress: string;
   amountUsd: number;
+  tokenAmount?: number;
+  tokenSymbol?: string;
+  tokenMint?: string;
+  transactionSignature?: string;
   createdAt: string;
-  status: "sandbox_recorded";
+  status: "sandbox_recorded" | "devnet_confirmed";
 };
 
 export type DemoEligibilityRecord = {

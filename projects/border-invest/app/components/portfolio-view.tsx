@@ -96,15 +96,31 @@ export function PortfolioView({ projects }: { projects: InvestmentProject[] }) {
                     </p>
                   </div>
                   <span className="bg-secondary px-2 py-1 text-[10px] font-semibold uppercase tracking-wider">
-                    Sandbox
+                    {commitment.status === "devnet_confirmed"
+                      ? "Devnet"
+                      : "Sandbox"}
                   </span>
                 </div>
                 <p className="mt-4 font-mono text-xl font-medium tabular-nums">
-                  {formatDetailedCurrency(commitment.amountUsd)}
+                  {commitment.tokenAmount !== undefined
+                    ? `${formatTokenAmount(commitment.tokenAmount)} ${commitment.tokenSymbol ?? "TEST"}`
+                    : formatDetailedCurrency(commitment.amountUsd)}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Recorded {formatDate(commitment.createdAt)}. No funds moved.
+                  {commitment.status === "devnet_confirmed"
+                    ? `Confirmed on devnet ${formatDate(commitment.createdAt)}.`
+                    : `Recorded ${formatDate(commitment.createdAt)}. No funds moved.`}
                 </p>
+                {commitment.transactionSignature && (
+                  <a
+                    href={`https://explorer.solana.com/tx/${commitment.transactionSignature}?cluster=devnet`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-flex min-h-8 items-center text-xs font-semibold underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    View devnet transaction
+                  </a>
+                )}
               </div>
             ))}
           </div>
@@ -147,5 +163,10 @@ function shorten(value: string) {
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
     new Date(value)
+  );
+}
+function formatTokenAmount(value: number) {
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 6 }).format(
+    value
   );
 }

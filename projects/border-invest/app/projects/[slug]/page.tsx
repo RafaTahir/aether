@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/src/data/projects";
-import { SandboxCommitmentPanel } from "../../components/sandbox-commitment-panel";
+import { DevnetEscrowPanel } from "../../components/devnet-escrow-panel";
 import { SaveProjectButton } from "../../components/save-project-button";
 import { ShareProjectButton } from "../../components/share-project-button";
 import {
@@ -240,7 +240,7 @@ export default async function ProjectPage({
               Demo only. No investment, ownership right, or expected return is
               offered. Wallet connection does not establish legal eligibility.
             </p>
-            <SandboxCommitmentPanel project={project} />
+            <DevnetEscrowPanel project={project} />
           </div>
         </aside>
       </div>
