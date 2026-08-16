@@ -1,6 +1,6 @@
 # Aether Escrow Program
 
-The first custom Solana program is a narrowly scoped milestone escrow for a devnet demonstration. It is not a securities contract and does not encode revenue share, equity, investment returns, or identity eligibility.
+The first custom Solana program is a narrowly scoped milestone escrow for a devnet demonstration. It is deployed to devnet but not connected to the frontend. It is not a securities contract and does not encode revenue share, equity, investment returns, or identity eligibility.
 
 ## What It Guarantees
 
@@ -30,6 +30,13 @@ The first custom Solana program is a narrowly scoped milestone escrow for a devn
 6. `refund` returns a depositor's recorded balance while paused.
 
 The program lives in `aether-contracts/`. Run Anchor commands from WSL because Solana program development on Windows uses WSL.
+
+Devnet verification:
+
+```text
+Program: BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj
+Authority: 23jEz9Fs2cUomTRaC6WFVYgfWnhphixsLT9BnvXosFqE
+```
 
 ## Next Contract Milestone
 

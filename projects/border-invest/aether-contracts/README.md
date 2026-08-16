@@ -7,7 +7,9 @@ Anchor program for a devnet-only milestone escrow demonstration.
 - Current scaffold program ID: `BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj`
 - Cluster target: devnet
 - Build: compiles with Anchor `1.1.2`
-- Deployment: not deployed
+- Deployment: deployed to devnet
+- Upgrade authority: `23jEz9Fs2cUomTRaC6WFVYgfWnhphixsLT9BnvXosFqE`
+- IDL: generated locally; on-chain IDL upload is pending
 - Token flow: not yet integration-tested against a deployed mint
 
 This is not an investment contract. It has no revenue-share, equity, pricing, KYC, or securities logic.

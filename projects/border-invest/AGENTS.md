@@ -27,7 +27,7 @@ Prototype workflows currently include URL-backed discovery filters, saved projec
 
 Prefer existing audited Solana programs and regulated providers over custom programs. Add Anchor only when validated requirements cannot be met through integration.
 
-The current custom program is not deployed or audited. Never connect real funds, mainnet, or investment rights to it. Keep the frontend sandbox commitment flow separate until the token integration tests and security review pass.
+The current custom program is deployed to devnet but not audited or frontend-integrated. Never connect real funds, mainnet, or investment rights to it. Keep the frontend sandbox commitment flow separate until the token integration tests and security review pass.
 
 ## Commands
 

@@ -8,7 +8,7 @@ export type EscrowRelease = {
 export const AETHER_ESCROW_PROGRAM_ID =
   "BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj";
 export const AETHER_ESCROW_CLUSTER = "devnet" as const;
-export const AETHER_ESCROW_STATUS = "compiled_not_deployed" as const;
+export const AETHER_ESCROW_STATUS = "deployed_not_integrated" as const;
 
 export interface EscrowService {
   prepareDeposit(
@@ -23,7 +23,7 @@ export interface EscrowService {
 export class DisabledEscrowService implements EscrowService {
   async prepareDeposit(): Promise<Uint8Array> {
     throw new Error(
-      "Aether escrow is compiled for devnet but not deployed yet."
+      "Aether escrow is deployed to devnet but not integrated into the frontend yet."
     );
   }
 

@@ -55,7 +55,7 @@ Store or reference on-chain only when public auditability is useful:
 
 ## Solana Strategy
 
-Phase 1 uses Wallet Standard, `@solana/kit`, and devnet. The custom Anchor escrow in `aether-contracts/` is compiled but not deployed and is restricted to a test-token milestone flow. A production design should use native USDC only after mint and cluster validation. Escrow should be a regulated custodian or an audited program with multisig governance. Do not deploy a custom token or program merely to make the app appear more on-chain.
+Phase 1 uses Wallet Standard, `@solana/kit`, and devnet. The custom Anchor escrow in `aether-contracts/` is deployed to devnet but not frontend-integrated and is restricted to a test-token milestone flow. A production design should use native USDC only after mint and cluster validation. Escrow should be a regulated custodian or an audited program with multisig governance. Do not deploy a custom token or program merely to make the app appear more on-chain.
 
 ## Threat Boundaries
 
