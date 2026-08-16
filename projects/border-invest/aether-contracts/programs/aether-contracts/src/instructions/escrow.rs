@@ -224,6 +224,7 @@ pub struct Refund<'info> {
 }
 
 pub fn handle_refund(ctx: Context<Refund>) -> Result<()> {
+    require!(ctx.accounts.escrow.total_released == 0, ErrorCode::ReleasesAlreadyStarted);
     let amount = ctx.accounts.receipt.amount;
     require!(amount > 0, ErrorCode::NothingToRefund);
     let available = ctx.accounts.escrow.available().ok_or(ErrorCode::MathOverflow)?;

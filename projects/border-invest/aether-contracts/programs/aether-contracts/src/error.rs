@@ -26,6 +26,8 @@ pub enum ErrorCode {
     InvalidTokenOwner,
     #[msg("The deposit receipt has no refundable balance")]
     NothingToRefund,
+    #[msg("Refunds are disabled after a milestone release has started")]
+    ReleasesAlreadyStarted,
     #[msg("Arithmetic operation overflowed")]
     MathOverflow,
     #[msg("Admin and emergency authorities must be different")]
