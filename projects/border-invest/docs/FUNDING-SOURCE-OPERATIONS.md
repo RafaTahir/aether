@@ -49,7 +49,7 @@ Required controls:
 
 ## Local Supabase Bootstrap
 
-Run `supabase/migrations/0001_aether_core.sql`, then `supabase/seed.sql`. After the first magic-link sign-in, promote the reviewed operator manually:
+Run `supabase/migrations/0001_aether_core.sql`, then `0002_rls_hardening.sql`, then `supabase/seed.sql`. After the first magic-link sign-in, promote the reviewed operator manually:
 
 ```sql
 update public.profiles set role = 'admin' where id = 'AUTH_USER_UUID';

@@ -48,7 +48,7 @@ These features require validated legal and product requirements before implement
 ## Supabase setup
 
 1. Create a Supabase project and copy its URL and anon key to `.env.local`.
-2. Run `supabase/migrations/0001_aether_core.sql` in the Supabase SQL editor.
+2. Run `supabase/migrations/0001_aether_core.sql` and `0002_rls_hardening.sql` in the Supabase SQL editor.
 3. Run `supabase/seed.sql` to load the four official reference records.
 4. Sign in at `/auth`, then promote the account after verifying it:
 
