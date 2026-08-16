@@ -3,37 +3,37 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Light mode - derived from Amber Dispatch */
-  --background: oklch(0.98 0.012 75);
-  --foreground: oklch(0.2 0.02 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 65);
-  --primary: oklch(0.4 0.11 70);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.94 0.015 75);
-  --secondary-foreground: oklch(0.2 0.02 65);
-  --muted: oklch(0.95 0.012 75);
-  --muted-foreground: oklch(0.4 0.035 70);
-  --accent: oklch(0.92 0.035 72);
-  --accent-foreground: oklch(0.2 0.02 65);
+  /* Light mode - derived from Gilded Aether */
+  --background: oklch(0.975 0.015 85);
+  --foreground: oklch(0.19 0.02 65);
+  --card: oklch(0.995 0.005 85);
+  --card-foreground: oklch(0.19 0.02 65);
+  --popover: oklch(0.995 0.005 85);
+  --popover-foreground: oklch(0.19 0.02 65);
+  --primary: oklch(0.48 0.14 83);
+  --primary-foreground: oklch(0.98 0.005 85);
+  --secondary: oklch(0.93 0.02 85);
+  --secondary-foreground: oklch(0.19 0.02 65);
+  --muted: oklch(0.945 0.015 85);
+  --muted-foreground: oklch(0.41 0.03 65);
+  --accent: oklch(0.9 0.055 85);
+  --accent-foreground: oklch(0.19 0.02 65);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.85 0.025 75);
-  --border-low: oklch(0.91 0.018 75);
-  --input: oklch(0.96 0.012 75);
-  --ring: oklch(0.4 0.11 70);
-  --cream: oklch(0.95 0.012 75);
+  --border: oklch(0.84 0.03 82);
+  --border-low: oklch(0.9 0.02 85);
+  --input: oklch(0.96 0.012 85);
+  --ring: oklch(0.48 0.14 83);
+  --cream: oklch(0.945 0.015 85);
   --gradient-bg: linear-gradient(
     135deg,
-    oklch(0.98 0.012 75) 0%,
-    oklch(0.95 0.018 90) 100%
+    oklch(0.975 0.015 85) 0%,
+    oklch(0.945 0.025 98) 100%
   );
   --gradient-accent: linear-gradient(
     to right,
-    oklch(0.4 0.11 70) 0%,
-    oklch(0.43 0.12 95) 100%
+    oklch(0.48 0.14 83) 0%,
+    oklch(0.51 0.13 58) 100%
   );
   --radius: 0.5rem;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -42,37 +42,37 @@
 }
 
 .dark {
-  /* Dark mode - derived from Amber Dispatch */
-  --background: oklch(0.14 0.01 70);
-  --foreground: oklch(0.96 0.01 70);
-  --card: oklch(0.19 0.015 70);
-  --card-foreground: oklch(0.96 0.01 70);
-  --popover: oklch(0.21 0.018 70);
-  --popover-foreground: oklch(0.96 0.01 70);
-  --primary: oklch(0.78 0.15 70);
-  --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.23 0.025 70);
-  --secondary-foreground: oklch(0.96 0.01 70);
-  --muted: oklch(0.21 0.018 70);
-  --muted-foreground: oklch(0.68 0.025 70);
-  --accent: oklch(0.25 0.045 70);
-  --accent-foreground: oklch(0.96 0.01 70);
+  /* Dark mode - derived from Gilded Aether */
+  --background: oklch(0.11 0.015 70);
+  --foreground: oklch(0.96 0.015 85);
+  --card: oklch(0.16 0.02 70);
+  --card-foreground: oklch(0.96 0.015 85);
+  --popover: oklch(0.18 0.025 70);
+  --popover-foreground: oklch(0.96 0.015 85);
+  --primary: oklch(0.86 0.18 88);
+  --primary-foreground: oklch(0.12 0.02 70);
+  --secondary: oklch(0.22 0.03 75);
+  --secondary-foreground: oklch(0.96 0.015 85);
+  --muted: oklch(0.19 0.02 72);
+  --muted-foreground: oklch(0.71 0.035 82);
+  --accent: oklch(0.26 0.06 82);
+  --accent-foreground: oklch(0.96 0.015 85);
   --destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.31 0.025 70);
-  --border-low: oklch(0.25 0.02 70);
-  --input: oklch(0.19 0.015 70);
-  --ring: oklch(0.78 0.15 70);
-  --cream: oklch(0.21 0.018 70);
+  --border: oklch(0.3 0.035 75);
+  --border-low: oklch(0.24 0.025 75);
+  --input: oklch(0.16 0.02 70);
+  --ring: oklch(0.86 0.18 88);
+  --cream: oklch(0.19 0.02 72);
   --gradient-bg: linear-gradient(
     135deg,
-    oklch(0.14 0.01 70) 0%,
-    oklch(0.17 0.018 85) 100%
+    oklch(0.11 0.015 70) 0%,
+    oklch(0.15 0.025 92) 100%
   );
   --gradient-accent: linear-gradient(
     to right,
-    oklch(0.78 0.15 70) 0%,
-    oklch(0.8 0.14 95) 100%
+    oklch(0.86 0.18 88) 0%,
+    oklch(0.82 0.15 58) 100%
   );
 }
 
