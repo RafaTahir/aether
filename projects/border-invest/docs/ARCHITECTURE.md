@@ -83,3 +83,4 @@ Phase 1 uses Wallet Standard, `@solana/kit`, and devnet. A production design sho
 - `/operator`: local operator workspace for saved drafts
 - `/funding`: demo funding-source directory and application checklist
 - `/funder`: demo funder pipeline and shortlist workspace
+- `/admin/funding`: unauthenticated local source-review prototype; do not expose in production

@@ -34,6 +34,8 @@ export function matchFundingSources(
         reasons.push(`${project.operatorType} eligible`);
       }
       if (
+        source.minUsd !== undefined &&
+        source.maxUsd !== undefined &&
         project.targetUsd >= source.minUsd &&
         project.targetUsd <= source.maxUsd
       ) {

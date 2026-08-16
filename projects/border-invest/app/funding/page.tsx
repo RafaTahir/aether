@@ -16,15 +16,15 @@ export default function FundingPage() {
       <section className="border-b bg-brand-bg">
         <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 lg:px-8 lg:py-28">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Funding directory / demo
+            Funding directory / verified references
           </p>
           <h1 className="mt-6 max-w-5xl font-serif text-5xl font-medium leading-[0.94] tracking-tight md:text-7xl">
             Find the money that fits the work.
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground">
-            Explore a structured directory of grants, corporate programs,
-            foundations, and impact funds. Select a project to see why a source
-            may fit and what an application room needs next.
+            Explore official reference pages for grants, philanthropy, and
+            impact capital. Select a project to see why a source may fit and
+            what an application room needs next.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -54,10 +54,10 @@ export default function FundingPage() {
       </section>
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">
-          <strong className="text-foreground">Directory boundary.</strong> These
-          source records are fictional placeholders for product design.
-          Production matching requires verified fund terms, current eligibility
-          rules, source agreements, and legal review.
+          <strong className="text-foreground">Directory boundary.</strong>{" "}
+          Aether verifies the source page and records when it was checked; it
+          does not guarantee an open call, eligibility, funding, or approval.
+          Confirm current terms on the official source before applying.
         </div>
       </section>
     </main>

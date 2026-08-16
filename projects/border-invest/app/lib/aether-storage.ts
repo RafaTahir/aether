@@ -14,6 +14,7 @@ export const AETHER_STORAGE_KEYS = {
   eligibility: "aether:demo-eligibility",
   projectDrafts: "aether:project-drafts",
   funderShortlist: "aether:funder-shortlist",
+  fundingReviewOverrides: "aether:funding-review-overrides",
 } as const;
 
 const STORAGE_EVENT = "aether-storage-change";

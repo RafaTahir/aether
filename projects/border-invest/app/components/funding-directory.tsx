@@ -7,7 +7,7 @@ import type {
   FundingSourceKind,
 } from "@/src/domain/funding";
 import type { InvestmentProject } from "@/src/domain/project";
-import { formatDetailedCurrency, formatPercent } from "@/src/lib/format-number";
+import { formatPercent } from "@/src/lib/format-number";
 import { matchFundingSources } from "@/src/lib/funding-match";
 import { FundingReadinessChecklist } from "./funding-readiness-checklist";
 
@@ -101,10 +101,11 @@ export function FundingDirectory({
                 className="min-h-11 w-full border bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <option value="all">All source types</option>
-                <option>Government grant</option>
+                <option>Multilateral grant</option>
                 <option>Corporate CSR</option>
                 <option>Foundation grant</option>
                 <option>Impact fund</option>
+                <option>Philanthropy platform</option>
               </select>
             </label>
             <label>
@@ -149,10 +150,10 @@ export function FundingDirectory({
             <span className="font-mono tabular-nums text-foreground">
               {filteredSources.length}
             </span>{" "}
-            sources in the demo directory
+            sources in the verified reference directory
           </p>
           <p className="text-xs text-muted-foreground">
-            All source records are fictional.
+            Confirm every call before applying.
           </p>
         </div>
         <div className="mt-6 space-y-4">
@@ -237,7 +238,7 @@ function FundingSourceCard({
         <div>
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
             <span className="bg-secondary px-2 py-1">{source.kind}</span>
-            <span className="bg-secondary px-2 py-1">Demo source</span>
+            <span className="bg-secondary px-2 py-1">Official reference</span>
           </div>
           <h2 className="mt-4 font-serif text-3xl font-medium">
             {source.name}
@@ -256,10 +257,7 @@ function FundingSourceCard({
         {source.description}
       </p>
       <div className="mt-6 grid gap-4 border-y py-4 sm:grid-cols-3">
-        <Detail
-          label="Range"
-          value={`${formatDetailedCurrency(source.minUsd)} - ${formatDetailedCurrency(source.maxUsd)}`}
-        />
+        <Detail label="Funding range" value={source.fundingRange} />
         <Detail label="Stage" value={source.stage} />
         <Detail label="Next window" value={source.nextWindow} />
       </div>
@@ -273,9 +271,31 @@ function FundingSourceCard({
         </div>
       )}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-        <p className="text-xs leading-5 text-muted-foreground">
-          {source.applicationMode} / {source.eligibility}
-        </p>
+        <div className="max-w-xl text-xs leading-5 text-muted-foreground">
+          <p>
+            {source.verificationStatus} / checked {source.lastVerified}
+          </p>
+          <p className="mt-1">{source.eligibility}</p>
+          <p className="mt-1">{source.sourceNotes}</p>
+          <div className="mt-2 flex gap-3 font-semibold">
+            <a
+              href={source.officialUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Official source
+            </a>
+            <a
+              href={source.applicationUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Application details
+            </a>
+          </div>
+        </div>
         <button
           type="button"
           onClick={onSelect}

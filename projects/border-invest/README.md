@@ -28,6 +28,7 @@ Open `http://localhost:3000`.
 - Project update timelines and shareable project briefs
 - Funding-source directory with project-fit matching and readiness checklist
 - Funder workspace with sector filters and local shortlists
+- Admin funding-source review route with provenance and verification states
 - Devnet-only cluster guardrail
 - Eligibility, commitment, and escrow service boundaries
 - Codex instructions in `AGENTS.md`

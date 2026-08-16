@@ -19,7 +19,7 @@ export function FundingReadinessChecklist({
   match?: FundingMatch;
 }) {
   const items =
-    match?.source.kind === "Government grant"
+    match?.source.kind === "Multilateral grant"
       ? [
           ...baseItems,
           "Local authority or public-partner coordination is documented",
