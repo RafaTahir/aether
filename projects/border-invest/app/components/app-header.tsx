@@ -62,6 +62,12 @@ export function AppHeader() {
             </Link>
             <Link
               className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              href="/funding"
+            >
+              Funding
+            </Link>
+            <Link
+              className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
               href="/projects/submit"
             >
               Submit a project
@@ -116,6 +122,12 @@ export function AppHeader() {
             </MobileLink>
             <MobileLink href="/portfolio" onClick={() => setMenuOpen(false)}>
               Portfolio
+            </MobileLink>
+            <MobileLink href="/funding" onClick={() => setMenuOpen(false)}>
+              Funding directory
+            </MobileLink>
+            <MobileLink href="/funder" onClick={() => setMenuOpen(false)}>
+              Funder workspace
             </MobileLink>
             <MobileLink href="/onboarding" onClick={() => setMenuOpen(false)}>
               Demo eligibility

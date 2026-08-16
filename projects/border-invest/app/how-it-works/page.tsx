@@ -46,8 +46,8 @@ const paths = [
   [
     "Corporations and funders",
     "Build a qualified pipeline for investment, CSR, grantmaking, sponsorship, or blended capital programs.",
-    "/about#funders",
-    "Partner with Aether",
+    "/funder",
+    "Open funder workspace",
   ],
 ];
 

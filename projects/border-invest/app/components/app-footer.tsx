@@ -21,6 +21,7 @@ export function AppFooter() {
               <Link href="/how-it-works">How it works</Link>
               <Link href="/about">About Aether</Link>
               <Link href="/portfolio">Portfolio</Link>
+              <Link href="/funding">Funding directory</Link>
             </div>
           </div>
           <div>
@@ -31,6 +32,7 @@ export function AppFooter() {
               <Link href="/onboarding">Project readiness</Link>
               <Link href="/projects/submit">Submit a project</Link>
               <Link href="/operator">Operator workspace</Link>
+              <Link href="/funder">Funder workspace</Link>
             </div>
           </div>
         </div>

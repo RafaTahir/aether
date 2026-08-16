@@ -1,0 +1,166 @@
+import type { FundingSource } from "@/src/domain/funding";
+
+export const fundingSources: FundingSource[] = [
+  {
+    id: "source-sea-climate-001",
+    name: "Southeast Asia Climate Resilience Facility",
+    kind: "Impact fund",
+    countries: ["Southeast Asia"],
+    sectors: [
+      "Clean infrastructure",
+      "Coastal resilience",
+      "Water infrastructure",
+    ],
+    fundingModels: ["Debt", "Revenue share"],
+    operatorTypes: ["Company", "Cooperative", "Public-interest entity"],
+    minUsd: 100000,
+    maxUsd: 1500000,
+    stage: "Growth",
+    nextWindow: "Rolling review",
+    description:
+      "A fictional regional facility for infrastructure and resilience projects with measurable operating revenue or public-service outcomes.",
+    eligibility:
+      "Operating plan, climate outcome baseline, local operator, and independent milestone evidence.",
+    applicationMode: "Rolling review",
+  },
+  {
+    id: "source-mekong-community-001",
+    name: "Mekong Community Infrastructure Challenge",
+    kind: "Government grant",
+    countries: ["Cambodia", "Laos", "Thailand", "Vietnam"],
+    sectors: [
+      "Water infrastructure",
+      "Clean infrastructure",
+      "Community health",
+    ],
+    fundingModels: ["Grant"],
+    operatorTypes: ["Cooperative", "Public-interest entity"],
+    minUsd: 25000,
+    maxUsd: 350000,
+    stage: "Pilot",
+    nextWindow: "September 2026",
+    description:
+      "A fictional public grant window for community infrastructure that improves essential services and local operating capacity.",
+    eligibility:
+      "Local implementation partner, community consultation record, budget, and public-benefit measurement plan.",
+    applicationMode: "Open call",
+  },
+  {
+    id: "source-corporate-climate-001",
+    name: "Aether Corporate Climate Matchbook",
+    kind: "Corporate CSR",
+    countries: ["Southeast Asia"],
+    sectors: [
+      "Clean infrastructure",
+      "Coastal resilience",
+      "Water infrastructure",
+      "Circular manufacturing",
+    ],
+    fundingModels: ["Grant", "Revenue share"],
+    operatorTypes: ["Company", "Cooperative", "Public-interest entity"],
+    minUsd: 50000,
+    maxUsd: 750000,
+    stage: "Pilot",
+    nextWindow: "Quarterly partner review",
+    description:
+      "A fictional corporate matching program that pairs regional climate projects with companies seeking measurable community and emissions outcomes.",
+    eligibility:
+      "Defined outcome metrics, delivery partner, budget, and quarterly reporting commitment.",
+    applicationMode: "Partner referral",
+  },
+  {
+    id: "source-island-livelihoods-001",
+    name: "Island Livelihoods Foundation",
+    kind: "Foundation grant",
+    countries: ["Philippines", "Indonesia", "Timor-Leste", "Malaysia"],
+    sectors: [
+      "Food logistics",
+      "Blue economy",
+      "Education and skills",
+      "Community health",
+    ],
+    fundingModels: ["Grant"],
+    operatorTypes: ["Individual", "Cooperative", "Public-interest entity"],
+    minUsd: 10000,
+    maxUsd: 200000,
+    stage: "Pilot",
+    nextWindow: "October 2026",
+    description:
+      "A fictional foundation window for locally operated programs that strengthen livelihoods, access, and community resilience.",
+    eligibility:
+      "Local operator, safeguarding plan, community participation, and a simple outcome reporting schedule.",
+    applicationMode: "Open call",
+  },
+  {
+    id: "source-circular-growth-001",
+    name: "Circular Manufacturing Growth Facility",
+    kind: "Impact fund",
+    countries: ["Indonesia", "Malaysia", "Thailand", "Vietnam"],
+    sectors: ["Circular manufacturing", "Food production", "Blue economy"],
+    fundingModels: ["Debt", "Revenue share", "Equity"],
+    operatorTypes: ["Company", "Cooperative"],
+    minUsd: 75000,
+    maxUsd: 900000,
+    stage: "Expansion",
+    nextWindow: "Rolling review",
+    description:
+      "A fictional growth facility for operating businesses expanding resource-efficient production and regional buyer relationships.",
+    eligibility:
+      "Existing operating history, buyer evidence, unit economics, and a documented use-of-funds plan.",
+    applicationMode: "Rolling review",
+  },
+  {
+    id: "source-skills-health-001",
+    name: "Skills and Health Access Fund",
+    kind: "Foundation grant",
+    countries: ["Philippines", "Laos", "Cambodia", "Thailand"],
+    sectors: ["Education and skills", "Community health"],
+    fundingModels: ["Grant"],
+    operatorTypes: ["Individual", "Company", "Public-interest entity"],
+    minUsd: 15000,
+    maxUsd: 180000,
+    stage: "Pilot",
+    nextWindow: "November 2026",
+    description:
+      "A fictional grant program supporting measurable access to learning, primary care, and local workforce development.",
+    eligibility:
+      "Service model, participant safeguarding, delivery partners, and anonymized outcome reporting.",
+    applicationMode: "Partner referral",
+  },
+  {
+    id: "source-blue-economy-001",
+    name: "Blue Economy Transition Window",
+    kind: "Government grant",
+    countries: ["Indonesia", "Timor-Leste", "Malaysia", "Philippines"],
+    sectors: ["Blue economy", "Coastal resilience", "Food logistics"],
+    fundingModels: ["Grant", "Debt"],
+    operatorTypes: ["Company", "Cooperative", "Public-interest entity"],
+    minUsd: 40000,
+    maxUsd: 500000,
+    stage: "Growth",
+    nextWindow: "January 2027",
+    description:
+      "A fictional public-private window for coastal livelihoods, post-harvest systems, and adaptation infrastructure.",
+    eligibility:
+      "Coastal impact baseline, local authority coordination, procurement plan, and maintenance budget.",
+    applicationMode: "Open call",
+  },
+  {
+    id: "source-inclusive-enterprise-001",
+    name: "Regional Inclusive Enterprise Facility",
+    kind: "Impact fund",
+    countries: ["Southeast Asia"],
+    sectors: ["All sectors"],
+    fundingModels: ["Debt", "Revenue share", "Equity"],
+    operatorTypes: ["Individual", "Company", "Cooperative"],
+    minUsd: 50000,
+    maxUsd: 1000000,
+    stage: "Expansion",
+    nextWindow: "Rolling review",
+    description:
+      "A fictional facility for established operators with repeatable models, verifiable demand, and a path to sustainable revenue.",
+    eligibility:
+      "Operating history, financial statements, governance, customer evidence, and a clear capital-repayment or distribution model.",
+    applicationMode: "Rolling review",
+  },
+];

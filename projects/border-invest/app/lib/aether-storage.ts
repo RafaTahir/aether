@@ -13,6 +13,7 @@ export const AETHER_STORAGE_KEYS = {
   commitments: "aether:sandbox-commitments",
   eligibility: "aether:demo-eligibility",
   projectDrafts: "aether:project-drafts",
+  funderShortlist: "aether:funder-shortlist",
 } as const;
 
 const STORAGE_EVENT = "aether-storage-change";

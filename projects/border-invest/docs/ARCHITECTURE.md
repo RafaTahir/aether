@@ -6,6 +6,8 @@ The current application proves discovery, wallet connection, project diligence, 
 
 The current prototype also exercises four local-only workflows: URL-backed discovery filters, saved project rooms, operator draft intake, and sandbox commitment records. These are deliberately browser-local until authentication, a database, and compliance providers exist.
 
+Funding discovery is also local demo data. `src/data/funding-sources.ts` models government grants, CSR programs, foundation grants, and impact funds. `src/lib/funding-match.ts` provides an explainable fit score based on country, sector, operator type, funding model, and target size.
+
 ## Production Context
 
 ```text
@@ -79,3 +81,5 @@ Phase 1 uses Wallet Standard, `@solana/kit`, and devnet. A production design sho
 - `/onboarding`: demo eligibility flow with no identity collection
 - `/projects/submit`: local operator draft intake
 - `/operator`: local operator workspace for saved drafts
+- `/funding`: demo funding-source directory and application checklist
+- `/funder`: demo funder pipeline and shortlist workspace

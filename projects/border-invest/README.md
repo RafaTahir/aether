@@ -26,6 +26,8 @@ Open `http://localhost:3000`.
 - Local participant portfolio with sandbox commitment records
 - Demo eligibility flow that intentionally collects no identity data
 - Project update timelines and shareable project briefs
+- Funding-source directory with project-fit matching and readiness checklist
+- Funder workspace with sector filters and local shortlists
 - Devnet-only cluster guardrail
 - Eligibility, commitment, and escrow service boundaries
 - Codex instructions in `AGENTS.md`
