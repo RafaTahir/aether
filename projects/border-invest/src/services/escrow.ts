@@ -8,7 +8,7 @@ export type EscrowRelease = {
 export const AETHER_ESCROW_PROGRAM_ID =
   "BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj";
 export const AETHER_ESCROW_CLUSTER = "devnet" as const;
-export const AETHER_ESCROW_STATUS = "deployed_not_integrated" as const;
+export const AETHER_ESCROW_STATUS = "devnet_deposit_integrated" as const;
 
 export interface EscrowService {
   prepareDeposit(

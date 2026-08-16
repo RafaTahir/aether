@@ -26,7 +26,7 @@
     "security_review": "none",
     "oracle_integration": "none",
     "emergency_pause": true,
-    "deployment_status": "deployed_not_integrated"
+    "deployment_status": "devnet_deposit_integrated"
   },
   "build_status": {
     "mvp_complete": false,
