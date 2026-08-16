@@ -1,0 +1,7 @@
+.next
+node_modules
+aether-contracts/target
+aether-contracts/node_modules
+aether-contracts/.anchor
+.git
+.brand-preview
