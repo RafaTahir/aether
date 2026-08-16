@@ -29,6 +29,7 @@ Open `http://localhost:3000`.
 - Funding-source directory with project-fit matching and readiness checklist
 - Funder workspace with sector filters and local shortlists
 - Admin funding-source review route with provenance and verification states
+- Supabase Auth/Postgres migration and protected source-review workflow
 - Devnet-only cluster guardrail
 - Eligibility, commitment, and escrow service boundaries
 - Codex instructions in `AGENTS.md`
@@ -43,6 +44,23 @@ Open `http://localhost:3000`.
 - Custom tokens or Solana programs
 
 These features require validated legal and product requirements before implementation.
+
+## Supabase setup
+
+1. Create a Supabase project and copy its URL and anon key to `.env.local`.
+2. Run `supabase/migrations/0001_aether_core.sql` in the Supabase SQL editor.
+3. Run `supabase/seed.sql` to load the four official reference records.
+4. Sign in at `/auth`, then promote the account after verifying it:
+
+```sql
+update public.profiles
+set role = 'admin'
+where id = 'YOUR_AUTH_USER_UUID';
+```
+
+5. Open `/admin/funding` to review and publish source records.
+
+The app still falls back to checked-in reference data when Supabase is not configured.
 
 ## Prototype storage
 

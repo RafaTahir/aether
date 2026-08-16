@@ -3,15 +3,24 @@
 import { useMemo, useState } from "react";
 import type { FundingReviewState, FundingSource } from "@/src/domain/funding";
 import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
+import { reviewFundingSource } from "../admin/funding/actions";
 
 type ReviewOverride = { state: FundingReviewState; reviewedAt: string };
 
-export function AdminFundingReview({ sources }: { sources: FundingSource[] }) {
+export function AdminFundingReview({
+  sources,
+  backendEnabled = false,
+}: {
+  sources: FundingSource[];
+  backendEnabled?: boolean;
+}) {
   const [overrides, setOverrides, ready] = useAetherStorage<
     Record<string, ReviewOverride>
   >(AETHER_STORAGE_KEYS.fundingReviewOverrides, {});
   const [filter, setFilter] = useState<FundingReviewState | "all">("all");
   const [query, setQuery] = useState("");
+  const [savingId, setSavingId] = useState("");
+  const [error, setError] = useState("");
   const records = useMemo(
     () =>
       sources
@@ -38,6 +47,14 @@ export function AdminFundingReview({ sources }: { sources: FundingSource[] }) {
       ...current,
       [sourceId]: { state, reviewedAt: new Date().toISOString() },
     }));
+    if (!backendEnabled) return;
+    setSavingId(sourceId);
+    setError("");
+    void reviewFundingSource(sourceId, state)
+      .then((result) => {
+        if (!result.ok) setError(result.error ?? "Review failed.");
+      })
+      .finally(() => setSavingId(""));
   }
 
   const counts = sources.reduce<Record<FundingReviewState, number>>(
@@ -77,6 +94,11 @@ export function AdminFundingReview({ sources }: { sources: FundingSource[] }) {
           <option value="paused">Paused</option>
         </select>
       </div>
+      {error && (
+        <p role="alert" className="mt-4 text-sm font-medium text-destructive">
+          {error}
+        </p>
+      )}
       {!ready ? (
         <div className="mt-8 h-48 animate-pulse bg-secondary" />
       ) : (
@@ -132,6 +154,7 @@ export function AdminFundingReview({ sources }: { sources: FundingSource[] }) {
               </div>
               <div className="flex flex-wrap items-start gap-2 lg:flex-col lg:items-end">
                 <select
+                  disabled={savingId === source.id}
                   aria-label={`Review state for ${source.name}`}
                   value={state}
                   onChange={(event) =>
@@ -140,18 +163,19 @@ export function AdminFundingReview({ sources }: { sources: FundingSource[] }) {
                       event.target.value as FundingReviewState
                     )
                   }
-                  className="min-h-10 border bg-background px-3 text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring"
+                  className="min-h-10 border bg-background px-3 text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
                 >
                   <option value="published">Publish</option>
                   <option value="needs_review">Needs review</option>
                   <option value="paused">Pause</option>
                 </select>
                 <button
+                  disabled={savingId === source.id}
                   type="button"
                   onClick={() => updateState(source.id, "published")}
-                  className="min-h-10 border px-3 text-xs font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+                  className="min-h-10 border px-3 text-xs font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
                 >
-                  Mark checked today
+                  {savingId === source.id ? "Saving..." : "Mark checked today"}
                 </button>
               </div>
             </article>

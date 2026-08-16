@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FundingDirectory } from "../components/funding-directory";
 import { projects } from "@/src/data/projects";
-import { fundingSources } from "@/src/data/funding-sources";
+import { loadFundingSources } from "../lib/funding-source-loader";
 
 export const metadata: Metadata = {
   title: "Funding Directory | Aether",
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     "Match Aether project rooms with grants, CSR programs, philanthropy, and impact capital.",
 };
 
-export default function FundingPage() {
+export default async function FundingPage() {
+  const fundingSources = await loadFundingSources();
   return (
     <main>
       <section className="border-b bg-brand-bg">

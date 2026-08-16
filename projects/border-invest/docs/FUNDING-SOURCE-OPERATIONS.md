@@ -26,7 +26,7 @@ Every published record needs an official URL, application URL, last-verified dat
 
 ## Current Admin Prototype
 
-`/admin/funding` lets a reviewer filter sources, open official pages, mark a source published/needs-review/paused, and record a local review date. It is intentionally not secure. Overrides use browser storage and do not affect the public directory or other users.
+`/admin/funding` uses Supabase Auth when configured. Reviewers can filter sources, open official pages, mark a source published/needs-review/paused, and record a review event. Without Supabase, the route renders setup instructions and never exposes the local-only review controls. The public directory falls back to checked-in references when the database is empty.
 
 ## Production Data Model
 
@@ -46,6 +46,16 @@ Required controls:
 - No client-side source state accepted as publication truth
 - Automatic `needs_review` transition after a configurable verification interval
 - Dead-link and HTTP-status monitoring with manual confirmation before republishing
+
+## Local Supabase Bootstrap
+
+Run `supabase/migrations/0001_aether_core.sql`, then `supabase/seed.sql`. After the first magic-link sign-in, promote the reviewed operator manually:
+
+```sql
+update public.profiles set role = 'admin' where id = 'AUTH_USER_UUID';
+```
+
+This manual promotion is intentional for the prototype. Production needs an invitation flow, organization membership, reviewer separation, and recovery procedures.
 
 ## Matching Rules
 
