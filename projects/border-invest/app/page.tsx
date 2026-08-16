@@ -53,8 +53,11 @@ export default function Home() {
             label="Fictional project pipeline"
             value={formatCompactCurrency(totalTarget)}
           />
+          <Proof
+            label="Project rooms"
+            value={`${projects.length} active briefs`}
+          />
           <Proof label="Markets represented" value={`${countries} countries`} />
-          <Proof label="Release structure" value="Milestone based" />
         </dl>
       </section>
 
