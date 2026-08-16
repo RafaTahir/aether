@@ -21,10 +21,13 @@ Aether is a devnet-only architecture prototype for cross-border project funding.
 - `src/services/`: compliance, commitment, custody, and escrow boundaries.
 - `app/lib/`: Solana client and wallet integration.
 - `app/lib/aether-storage.ts`: browser-local prototype state only.
+- `aether-contracts/`: Anchor devnet escrow program; compile and test from WSL.
 
 Prototype workflows currently include URL-backed discovery filters, saved project rooms, demo eligibility, operator drafts, and sandbox commitment records. They are not server state and must not be described as real eligibility, investment, or payment.
 
 Prefer existing audited Solana programs and regulated providers over custom programs. Add Anchor only when validated requirements cannot be met through integration.
+
+The current custom program is not deployed or audited. Never connect real funds, mainnet, or investment rights to it. Keep the frontend sandbox commitment flow separate until the token integration tests and security review pass.
 
 ## Commands
 

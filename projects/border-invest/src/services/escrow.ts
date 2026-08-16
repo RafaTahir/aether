@@ -5,6 +5,11 @@ export type EscrowRelease = {
   recipientAddress: string;
 };
 
+export const AETHER_ESCROW_PROGRAM_ID =
+  "BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj";
+export const AETHER_ESCROW_CLUSTER = "devnet" as const;
+export const AETHER_ESCROW_STATUS = "compiled_not_deployed" as const;
+
 export interface EscrowService {
   prepareDeposit(
     offeringId: string,
@@ -17,7 +22,9 @@ export interface EscrowService {
 // Implement only after a regulated custody model and audited program are selected.
 export class DisabledEscrowService implements EscrowService {
   async prepareDeposit(): Promise<Uint8Array> {
-    throw new Error("Escrow is not configured.");
+    throw new Error(
+      "Aether escrow is compiled for devnet but not deployed yet."
+    );
   }
 
   async prepareRelease(): Promise<Uint8Array> {

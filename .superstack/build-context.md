@@ -20,6 +20,14 @@
       "Eligibility, custody, and escrow use replaceable provider interfaces"
     ]
   },
+  "defi": {
+    "protocol_type": "custom",
+    "program_id": "BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj",
+    "security_review": "none",
+    "oracle_integration": "none",
+    "emergency_pause": true,
+    "deployment_status": "compiled_not_deployed"
+  },
   "build_status": {
     "mvp_complete": false,
     "tests_passing": true,
