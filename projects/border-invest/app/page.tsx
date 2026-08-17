@@ -23,7 +23,7 @@ export default function Home() {
               Projects worth crossing borders for.
             </h1>
           </div>
-          <div className="flex flex-col justify-end border-l pl-6 lg:col-span-4">
+          <div className="gold-edge flex flex-col justify-end border-l pl-6 lg:col-span-4">
             <p className="max-w-md text-base leading-7 text-muted-foreground">
               Discover milestone-led projects created by individuals, companies,
               cooperatives, and public-interest entities. Review the evidence

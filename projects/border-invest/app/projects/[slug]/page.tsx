@@ -44,7 +44,7 @@ export default async function ProjectPage({
                 {project.name}
               </h1>
             </div>
-            <div className="border-l pl-6 lg:col-span-4">
+            <div className="gold-edge border-l pl-6 lg:col-span-4">
               <p className="text-xs text-muted-foreground">Operated by</p>
               <p className="mt-2 text-lg font-semibold">{project.operator}</p>
               <p className="mt-1 text-sm text-muted-foreground">

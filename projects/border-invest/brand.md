@@ -34,8 +34,10 @@ Fonts are self-hosted at build time through `next/font/google` in `app/layout.ts
 
 - `--gradient-bg`: restrained champagne depth for hero and page-header sections
 - `--gradient-accent`: bright gold-to-warm-amber accent for rules, markers, and non-text details
+- `--gradient-gold-sheen`: multi-stop metallic foil effect used on primary actions and the Aether mark
 
 Use no more than one gradient in a viewport. Financial controls and body-copy backgrounds remain solid.
+The gold sheen is a signature accent, not a decorative layer for every card. Its shimmer stops completely when reduced motion is enabled.
 
 ## Tone And Voice
 

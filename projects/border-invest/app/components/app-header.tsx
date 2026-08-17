@@ -25,7 +25,7 @@ export function AppHeader() {
             className="flex min-h-10 items-center gap-3 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span
-              className="grid size-8 place-items-center bg-primary font-serif text-lg text-primary-foreground"
+              className="gold-mark grid size-8 place-items-center bg-primary font-serif text-lg text-primary-foreground"
               aria-hidden="true"
             >
               A
