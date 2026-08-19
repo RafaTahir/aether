@@ -28,8 +28,8 @@ export type SandboxCommitment = {
   status: "sandbox_recorded" | "devnet_confirmed";
 };
 
-export type DemoEligibilityRecord = {
-  status: "demo_eligible";
+export type EligibilityReadinessRecord = {
+  status: "readiness_acknowledged";
   country: string;
   participantType: "individual" | "organization";
   confirmedAt: string;

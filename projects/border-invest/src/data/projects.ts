@@ -39,7 +39,7 @@ export const projects: InvestmentProject[] = [
       {
         date: "2026-07-28",
         title: "Cooperative agreements collected",
-        body: "All six participating cooperatives submitted signed participation agreements for the demo brief.",
+        body: "All six participating cooperatives submitted signed participation agreements for the project brief.",
       },
     ],
     useOfFunds: [

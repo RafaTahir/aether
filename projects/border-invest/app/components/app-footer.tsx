@@ -7,8 +7,8 @@ export function AppFooter() {
         <div className="md:col-span-6">
           <p className="font-serif text-3xl font-medium">Aether</p>
           <p className="mt-3 max-w-md text-sm leading-6 text-background/65">
-            An architecture prototype for transparent, compliant cross-border
-            project capital on Solana.
+            A pilot workspace for transparent, compliant cross-border project
+            capital on Solana.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-8 md:col-span-6">
@@ -39,7 +39,10 @@ export function AppFooter() {
       </div>
       <div className="border-t border-background/20">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-4 py-5 text-xs text-background/60 md:px-6 lg:px-8">
-          <p>Fictional devnet demonstration. Not an investment offering.</p>
+          <p>
+            Seeded catalog data. Devnet-only test flow. Not an investment
+            offering.
+          </p>
           <p>Built for transparent project finance.</p>
         </div>
       </div>

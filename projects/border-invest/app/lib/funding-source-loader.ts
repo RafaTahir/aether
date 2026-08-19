@@ -9,7 +9,8 @@ export async function loadFundingSources({ includeUnpublished = false } = {}) {
   let query = supabase.from("funding_sources").select("*").order("name");
   if (!includeUnpublished) query = query.eq("review_state", "published");
   const { data, error } = await query;
-  if (error || !data?.length) return staticSources;
+  if (error) throw new Error(`Funding directory unavailable: ${error.message}`);
+  if (!data) return [];
   return data.map((record) =>
     fundingSourceFromRecord(record as Record<string, unknown>)
   );

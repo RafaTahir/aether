@@ -3,7 +3,7 @@
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
     <main className="mx-auto max-w-2xl px-4 py-24 text-center">
-      <h1 className="text-2xl font-semibold">Could not load the prototype</h1>
+      <h1 className="text-2xl font-semibold">Could not load this page</h1>
       <p className="mt-3 text-sm text-muted-foreground">
         The project data or network connection failed. Try the request again.
       </p>

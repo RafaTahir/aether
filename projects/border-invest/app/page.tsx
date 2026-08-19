@@ -47,7 +47,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-label="Prototype evidence" className="border-b bg-card">
+      <section aria-label="Catalog evidence" className="border-b bg-card">
         <dl className="mx-auto grid max-w-7xl divide-y px-4 md:grid-cols-3 md:divide-x md:divide-y-0 md:px-6 lg:px-8">
           <Proof
             label="Fictional project pipeline"
@@ -143,7 +143,7 @@ export default function Home() {
 
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">
-          <strong className="text-foreground">Architecture prototype.</strong>{" "}
+          <strong className="text-foreground">Current product boundary.</strong>{" "}
           All projects, operators, metrics, and terms are fictional. No
           investment or security is offered. Production launch requires
           jurisdiction-specific counsel and licensed identity, offering,

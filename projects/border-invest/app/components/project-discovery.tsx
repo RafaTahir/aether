@@ -192,7 +192,7 @@ export function ProjectDiscovery({
           filters.
         </p>
         <p className="text-xs text-muted-foreground">
-          All figures are fictional demo data.
+          All figures are fictional catalog data.
         </p>
       </div>
       {filteredProjects.length === 0 ? (
@@ -201,8 +201,7 @@ export function ProjectDiscovery({
             No briefs match yet.
           </h3>
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-            Try widening the filters or clear them to see the full demo
-            portfolio.
+            Try widening the filters or clear them to see the full catalog.
           </p>
           <button
             type="button"

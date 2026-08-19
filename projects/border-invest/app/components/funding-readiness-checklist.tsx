@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { FundingMatch } from "@/src/domain/funding";
 import type { InvestmentProject } from "@/src/domain/project";
+import { createFundingApplication } from "../funding/actions";
 
 const baseItems = [
   "Operator identity and entity details are ready",
@@ -29,6 +30,9 @@ export function FundingReadinessChecklist({
           "The funding model and participant rights have received legal review",
         ];
   const [checked, setChecked] = useState<string[]>([]);
+  const [applicationId, setApplicationId] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
   const progress = Math.round((checked.length / items.length) * 100);
 
   function toggle(item: string) {
@@ -37,6 +41,33 @@ export function FundingReadinessChecklist({
         ? current.filter((value) => value !== item)
         : [...current, item]
     );
+  }
+
+  function createApplicationRecord() {
+    if (!match) return;
+    if (progress < 100) {
+      setMessage(
+        "Complete the readiness checklist before creating the record."
+      );
+      return;
+    }
+    setMessage("");
+    startTransition(async () => {
+      const result = await createFundingApplication(
+        project.slug,
+        match.source.id
+      );
+      if (result.ok) {
+        setApplicationId(result.application.id);
+        setMessage(
+          result.existing
+            ? "This application record already exists in your workspace."
+            : "Application record created in your workspace."
+        );
+      } else {
+        setMessage(result.error);
+      }
+    });
   }
 
   return (
@@ -58,7 +89,14 @@ export function FundingReadinessChecklist({
         A local checklist for {project.name}. Completing it does not submit an
         application or establish eligibility.
       </p>
-      <div className="mt-5 h-1.5 bg-secondary">
+      <div
+        className="mt-5 h-1.5 bg-secondary"
+        role="progressbar"
+        aria-label="Application readiness"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={progress}
+      >
         <div
           className="h-full bg-primary transition-[width] duration-150 ease-out"
           style={{ width: `${progress}%` }}
@@ -88,6 +126,31 @@ export function FundingReadinessChecklist({
           </span>
           . Next step: {match.source.applicationMode.toLowerCase()}.
         </p>
+      )}
+      {match && (
+        <div className="mt-6 border-t pt-5">
+          <button
+            type="button"
+            onClick={createApplicationRecord}
+            disabled={isPending || progress < 100}
+            className="min-h-11 w-full bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isPending
+              ? "Creating record..."
+              : applicationId
+                ? "Application record created"
+                : "Create application record"}
+          </button>
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+            This records your preparation in Aether. It does not submit an
+            external application or establish legal eligibility.
+          </p>
+          {message && (
+            <p role="status" className="mt-3 text-sm font-medium text-primary">
+              {message}
+            </p>
+          )}
+        </div>
       )}
     </section>
   );

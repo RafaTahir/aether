@@ -11,7 +11,7 @@ import {
 export const AETHER_STORAGE_KEYS = {
   savedProjects: "aether:saved-projects",
   commitments: "aether:sandbox-commitments",
-  eligibility: "aether:demo-eligibility",
+  eligibility: "aether:readiness-record",
   projectDrafts: "aether:project-drafts",
   funderShortlist: "aether:funder-shortlist",
   fundingReviewOverrides: "aether:funding-review-overrides",

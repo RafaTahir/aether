@@ -82,6 +82,12 @@ export default async function AdminFundingPage() {
           Supabase, recorded in review history, and reflected in the public
           directory after revalidation.
         </div>
+        <Link
+          href="/admin/projects"
+          className="mt-6 inline-flex min-h-11 items-center border bg-background px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Review project rooms
+        </Link>
         <AdminFundingReview sources={sources} backendEnabled />
       </section>
     </main>

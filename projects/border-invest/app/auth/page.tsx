@@ -27,7 +27,8 @@ export default function AuthPage() {
       const supabase = createSupabaseBrowserClient();
       const next =
         new URLSearchParams(window.location.search).get("next") ?? "/portfolio";
-      const safeNext = next.startsWith("/") ? next : "/portfolio";
+      const safeNext =
+        next.startsWith("/") && !next.startsWith("//") ? next : "/portfolio";
       const { error: authError } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -102,7 +103,7 @@ export default function AuthPage() {
         </form>
         <p className="mt-6 text-xs leading-5 text-muted-foreground">
           Aether will not make a legal eligibility determination through this
-          demo sign-in. Production identity checks require approved providers.
+          sign-in. Identity checks require approved providers.
         </p>
       </div>
     </main>

@@ -80,8 +80,9 @@ export default function OnboardingPage() {
               A small step before a large one.
             </h2>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
-              In production, this step would connect to approved identity and
-              offering-rule providers. Here it stays local and fictional.
+              This acknowledgement records what you intend to review. Legal
+              eligibility requires approved identity and offering-rule
+              providers.
             </p>
           </div>
           <div className="lg:col-span-8">
@@ -103,9 +104,9 @@ export default function OnboardingPage() {
           <div className="lg:col-span-7">
             <p className="text-base leading-7 text-background/65">
               Eligibility providers, legal offering rules, custody, escrow, and
-              USDC payments remain disabled provider interfaces. The prototype
-              cannot accept real commitments. A connected wallet is used only to
-              test Solana devnet discovery.
+              USDC payments remain behind provider interfaces. This workspace
+              cannot accept real commitments. A connected wallet is used only
+              for Solana devnet testing.
             </p>
             <Link
               href="/projects/submit"

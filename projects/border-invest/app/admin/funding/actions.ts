@@ -36,20 +36,25 @@ export async function reviewFundingSource(
     .eq("id", sourceId);
   if (updateError) return { ok: false, error: updateError.message };
 
-  await supabase.from("funding_source_reviews").insert({
-    source_id: sourceId,
-    reviewer_id: user.id,
-    state,
-    note,
-    reviewed_at: reviewedAt,
-  });
-  await supabase.from("audit_events").insert({
+  const { error: reviewError } = await supabase
+    .from("funding_source_reviews")
+    .insert({
+      source_id: sourceId,
+      reviewer_id: user.id,
+      state,
+      note,
+      reviewed_at: reviewedAt,
+    });
+  if (reviewError) return { ok: false, error: reviewError.message };
+
+  const { error: auditError } = await supabase.from("audit_events").insert({
     actor_id: user.id,
     event_type: "funding_source_reviewed",
     entity_type: "funding_source",
     entity_id: sourceId,
     metadata: { state, note },
   });
+  if (auditError) return { ok: false, error: auditError.message };
   revalidatePath("/funding");
   revalidatePath("/admin/funding");
   return { ok: true };

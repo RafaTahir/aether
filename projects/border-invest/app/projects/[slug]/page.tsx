@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projects } from "@/src/data/projects";
 import { DevnetEscrowPanel } from "../../components/devnet-escrow-panel";
 import { SaveProjectButton } from "../../components/save-project-button";
 import { ShareProjectButton } from "../../components/share-project-button";
+import { getSavedProjectState } from "../saved";
 import {
   formatCompactCurrency,
   formatDetailedCurrency,
@@ -13,6 +15,30 @@ import {
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
+}
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects.find((candidate) => candidate.slug === slug);
+  if (!project) return {};
+
+  return {
+    title: `${project.name} | Aether`,
+    description: project.summary,
+    alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      title: `${project.name} | Aether`,
+      description: project.summary,
+      type: "article",
+      images: [{ url: project.image, alt: project.imageAlt }],
+    },
+  };
 }
 
 export default async function ProjectPage({
@@ -24,6 +50,7 @@ export default async function ProjectPage({
   const project = projects.find((candidate) => candidate.slug === slug);
   if (!project) notFound();
   const fundedPercent = (project.fundedUsd / project.targetUsd) * 100;
+  const savedState = await getSavedProjectState(project.slug);
 
   return (
     <main>
@@ -73,7 +100,10 @@ export default async function ProjectPage({
               </span>
             </div>
             <div className="flex gap-2">
-              <SaveProjectButton projectSlug={project.slug} />
+              <SaveProjectButton
+                projectSlug={project.slug}
+                initialSaved={savedState.saved}
+              />
               <ShareProjectButton />
             </div>
           </div>
@@ -212,7 +242,7 @@ export default async function ProjectPage({
           <div className="sticky top-24 border bg-card p-6">
             <div className="flex items-center justify-between gap-4 border-b pb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Prototype terms
+                Pilot terms
               </p>
               <span className="bg-secondary px-2 py-1 text-xs font-semibold">
                 Grade {project.riskGrade}
@@ -237,8 +267,9 @@ export default async function ProjectPage({
               Review eligibility
             </Link>
             <p className="mt-4 text-xs leading-5 text-muted-foreground">
-              Demo only. No investment, ownership right, or expected return is
-              offered. Wallet connection does not establish legal eligibility.
+              Seeded catalog data. No investment, ownership right, or expected
+              return is offered. Wallet connection does not establish legal
+              eligibility.
             </p>
             <DevnetEscrowPanel project={project} />
           </div>

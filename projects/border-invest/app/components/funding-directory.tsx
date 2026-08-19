@@ -246,7 +246,7 @@ function FundingSourceCard({
         </div>
         {match && (
           <div className="text-right">
-            <p className="text-xs text-muted-foreground">Project fit</p>
+            <p className="text-xs text-muted-foreground">Advisory fit</p>
             <p className="mt-1 font-mono text-2xl font-medium tabular-nums">
               {formatPercent(match.score)}
             </p>

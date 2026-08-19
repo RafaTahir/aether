@@ -41,7 +41,7 @@ export default function SubmitProjectPage() {
               {[
                 "Define the work and funding model",
                 "Add the operator and place",
-                "Save a draft for later review",
+                "Submit a room for reviewer feedback",
               ].map((item, index) => (
                 <li
                   key={item}
@@ -62,9 +62,9 @@ export default function SubmitProjectPage() {
       </section>
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">
-          <strong className="text-foreground">Prototype boundary.</strong>{" "}
-          Saving a local draft does not submit a project, create an offering,
-          establish eligibility, or request funds.
+          <strong className="text-foreground">Pilot boundary.</strong> Intake
+          creates a review record. It does not establish legal eligibility,
+          create an offering, or request funds.
         </div>
       </section>
     </main>

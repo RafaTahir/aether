@@ -23,34 +23,44 @@ const DEPOSIT_DISCRIMINATOR = new Uint8Array([
   242, 35, 198, 137, 82, 225, 242, 182,
 ]);
 
-export type DemoEscrowConfig = {
+export type DevnetEscrowConfig = {
+  projectSlug: string;
   escrow: Address;
   mint: Address;
   decimals: number;
 };
 
-export function getConfiguredDemoEscrow(): DemoEscrowConfig | null {
+export function getConfiguredDevnetEscrow(): DevnetEscrowConfig | null {
   const escrow = process.env.NEXT_PUBLIC_AETHER_ESCROW_ADDRESS;
   const mint = process.env.NEXT_PUBLIC_AETHER_ESCROW_MINT;
-  if (!escrow || !mint) return null;
+  const projectSlug = process.env.NEXT_PUBLIC_AETHER_ESCROW_PROJECT_SLUG;
+  if (!escrow || !mint || !projectSlug || !/^[a-z0-9-]+$/.test(projectSlug)) {
+    return null;
+  }
 
   try {
+    const decimals = Number(
+      process.env.NEXT_PUBLIC_AETHER_ESCROW_DECIMALS ?? "6"
+    );
+    if (!Number.isInteger(decimals) || decimals < 0 || decimals > 9)
+      return null;
     return {
+      projectSlug,
       escrow: address(escrow),
       mint: address(mint),
-      decimals: Number(process.env.NEXT_PUBLIC_AETHER_ESCROW_DECIMALS ?? "6"),
+      decimals,
     };
   } catch {
     return null;
   }
 }
 
-export async function prepareDemoDeposit(
+export async function prepareDevnetDeposit(
   client: AppClient,
   depositor: Address,
   amount: bigint
 ) {
-  const config = getConfiguredDemoEscrow();
+  const config = getConfiguredDevnetEscrow();
   if (!config)
     throw new Error("The devnet escrow is not configured for this deployment.");
 

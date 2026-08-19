@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import type { DemoEligibilityRecord } from "@/src/domain/investment";
+import type { EligibilityReadinessRecord } from "@/src/domain/investment";
 import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 
 const countries = [
@@ -18,13 +18,13 @@ const countries = [
 
 export function EligibilityFlow() {
   const [record, setRecord, ready] =
-    useAetherStorage<DemoEligibilityRecord | null>(
+    useAetherStorage<EligibilityReadinessRecord | null>(
       AETHER_STORAGE_KEYS.eligibility,
       null
     );
   const [country, setCountry] = useState("United States");
   const [participantType, setParticipantType] =
-    useState<DemoEligibilityRecord["participantType"]>("individual");
+    useState<EligibilityReadinessRecord["participantType"]>("individual");
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState("");
 
@@ -32,13 +32,13 @@ export function EligibilityFlow() {
     event.preventDefault();
     if (!confirmed) {
       setError(
-        "Confirm that you understand this is fictional demo data before continuing."
+        "Confirm that you understand this is a readiness acknowledgement, not a legal eligibility decision."
       );
       return;
     }
     setError("");
     setRecord({
-      status: "demo_eligible",
+      status: "readiness_acknowledged",
       country,
       participantType,
       confirmedAt: new Date().toISOString(),
@@ -49,10 +49,10 @@ export function EligibilityFlow() {
     return (
       <div className="border border-primary/40 bg-primary/5 p-6">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-          Demo status
+          Readiness acknowledged
         </p>
         <h2 className="mt-3 font-serif text-3xl font-medium">
-          Eligible to explore the sandbox.
+          Ready to review project rooms.
         </h2>
         <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
           This status is stored only in this browser. It is not KYC, AML, legal
@@ -76,7 +76,7 @@ export function EligibilityFlow() {
             onClick={() => setRecord(null)}
             className="min-h-11 px-3 text-sm font-semibold text-muted-foreground underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-ring"
           >
-            Reset demo status
+            Reset acknowledgement
           </button>
         </div>
       </div>
@@ -88,10 +88,10 @@ export function EligibilityFlow() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Participant sandbox
+            Participant readiness
           </p>
           <h2 className="mt-3 font-serif text-3xl font-medium">
-            Run demo eligibility
+            Review readiness
           </h2>
         </div>
         <span className="bg-secondary px-2 py-1 text-[10px] font-semibold uppercase tracking-wider">
@@ -126,7 +126,8 @@ export function EligibilityFlow() {
             value={participantType}
             onChange={(event) =>
               setParticipantType(
-                event.target.value as DemoEligibilityRecord["participantType"]
+                event.target
+                  .value as EligibilityReadinessRecord["participantType"]
               )
             }
             className="min-h-11 w-full border bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
@@ -145,8 +146,8 @@ export function EligibilityFlow() {
           className="mt-1 size-4 accent-primary focus-visible:ring-2 focus-visible:ring-ring"
         />{" "}
         <span>
-          I understand that Aether is a fictional devnet prototype. No
-          investment, securities, ownership, or return is offered.
+          I understand that this acknowledgement is not KYC, AML, legal
+          eligibility, an investment offer, ownership, or a return promise.
         </span>
       </label>
       {error && (
@@ -159,7 +160,7 @@ export function EligibilityFlow() {
         disabled={!ready}
         className="mt-6 min-h-11 bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
       >
-        Run demo check
+        Record readiness
       </button>
     </form>
   );

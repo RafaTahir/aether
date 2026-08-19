@@ -25,9 +25,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aether | Devnet prototype",
+  title: "Aether | Project capital",
   description:
-    "Explore fictional, milestone-led projects from individuals and organizations in a safe Solana devnet prototype.",
+    "Explore milestone-led project rooms from operators and organizations, with evidence before capital moves.",
 };
 
 export default function RootLayout({

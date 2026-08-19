@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import type { ProjectDraft } from "@/src/domain/investment";
-import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
+import {
+  createProjectSubmission,
+  type ProjectSubmissionInput,
+  type ProjectSubmissionStatus,
+} from "../projects/submit/actions";
 
 const countries = [
   "Philippines",
@@ -22,10 +25,7 @@ const sectors = [
   "Other",
 ];
 
-type FormState = Omit<
-  ProjectDraft,
-  "id" | "createdAt" | "status" | "targetUsd"
-> & { targetUsd: string };
+type FormState = ProjectSubmissionInput;
 
 const emptyForm: FormState = {
   projectName: "",
@@ -37,66 +37,53 @@ const emptyForm: FormState = {
   fundingModel: "Grant",
   targetUsd: "",
   summary: "",
+  termsAccepted: false,
 };
 
 export function ProjectSubmissionForm() {
-  const [drafts, setDrafts, ready] = useAetherStorage<ProjectDraft[]>(
-    AETHER_STORAGE_KEYS.projectDrafts,
-    []
-  );
   const [form, setForm] = useState<FormState>(emptyForm);
   const [error, setError] = useState("");
-  const [savedId, setSavedId] = useState<string | null>(null);
+  const [saved, setSaved] = useState<{
+    id: string;
+    status: ProjectSubmissionStatus;
+  } | null>(null);
+  const [savingStatus, setSavingStatus] =
+    useState<ProjectSubmissionStatus | null>(null);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
-  function saveDraft(event: FormEvent<HTMLFormElement>) {
+  async function saveSubmission(
+    event: FormEvent<HTMLFormElement>,
+    status: ProjectSubmissionStatus
+  ) {
     event.preventDefault();
-    if (
-      !form.projectName.trim() ||
-      !form.operatorName.trim() ||
-      !form.summary.trim() ||
-      !form.targetUsd
-    ) {
-      setError(
-        "Add a project name, operator, funding target, and short summary."
-      );
-      return;
-    }
-
-    const targetUsd = Number(form.targetUsd);
-    if (!Number.isFinite(targetUsd) || targetUsd <= 0) {
-      setError("Enter a funding target greater than zero.");
-      return;
-    }
-
-    const id = `draft-${Date.now()}`;
-    const draft: ProjectDraft = {
-      ...form,
-      targetUsd,
-      id,
-      createdAt: new Date().toISOString(),
-      status: "draft",
-    };
-    setDrafts([...drafts, draft]);
-    setSavedId(id);
     setError("");
+    setSavingStatus(status);
+    const result = await createProjectSubmission(form, status);
+    if (result.ok) {
+      setSaved({ id: result.submission.id, status });
+    } else {
+      setError(result.error);
+    }
+    setSavingStatus(null);
   }
 
-  if (savedId) {
+  if (saved) {
     return (
       <div className="border border-primary/40 bg-primary/5 p-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-          Draft saved locally
+          {saved.status === "submitted"
+            ? "Submitted for review"
+            : "Draft saved"}
         </p>
         <h2 className="mt-3 font-serif text-4xl font-medium">
-          Your project has a review starting point.
+          Your project room has a durable starting point.
         </h2>
         <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-          Draft {savedId} is stored in this browser only. It has not been
-          submitted to Aether, reviewed, verified, or published.
+          Submission {saved.id} is stored in Aether. It is now visible in your
+          operator workspace with its current review state.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -108,12 +95,12 @@ export function ProjectSubmissionForm() {
           <button
             type="button"
             onClick={() => {
-              setSavedId(null);
+              setSaved(null);
               setForm(emptyForm);
             }}
             className="min-h-11 border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
           >
-            Create another draft
+            Create another project room
           </button>
         </div>
       </div>
@@ -121,7 +108,17 @@ export function ProjectSubmissionForm() {
   }
 
   return (
-    <form onSubmit={saveDraft} className="border bg-card p-6 md:p-8">
+    <form
+      onSubmit={(event) => {
+        const submitter = (event.nativeEvent as SubmitEvent).submitter;
+        const status =
+          submitter?.getAttribute("data-status") === "submitted"
+            ? "submitted"
+            : "draft";
+        void saveSubmission(event, status);
+      }}
+      className="border bg-card p-6 md:p-8"
+    >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -132,13 +129,13 @@ export function ProjectSubmissionForm() {
           </h2>
         </div>
         <span className="bg-secondary px-2 py-1 text-[10px] font-semibold uppercase tracking-wider">
-          Local draft only
+          Pilot intake
         </span>
       </div>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground">
-        Give participants enough context to inspect the work. A production
-        submission would add KYB, documents, legal review, and evidence uploads
-        later.
+        Give participants enough context to inspect the work. A submitted room
+        enters a reviewer queue; evidence, identity checks, and legal review are
+        handled as separate review stages.
       </p>
       <div className="mt-8 grid gap-5 md:grid-cols-2">
         <Field
@@ -224,6 +221,19 @@ export function ProjectSubmissionForm() {
           className="w-full resize-y border bg-background px-3 py-3 text-sm leading-6 focus-visible:ring-2 focus-visible:ring-ring"
         />
       </label>
+      <label className="mt-6 flex items-start gap-3 text-sm leading-6">
+        <input
+          required
+          type="checkbox"
+          checked={form.termsAccepted}
+          onChange={(event) => update("termsAccepted", event.target.checked)}
+          className="mt-1 size-4 accent-primary focus-visible:ring-2 focus-visible:ring-ring"
+        />
+        <span>
+          I understand this is a project intake for review. It does not create
+          legal eligibility, an investment offering, or a request for funds.
+        </span>
+      </label>
       {error && (
         <p role="alert" className="mt-4 text-sm font-medium text-destructive">
           {error}
@@ -231,16 +241,29 @@ export function ProjectSubmissionForm() {
       )}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t pt-5">
         <p className="max-w-md text-xs leading-5 text-muted-foreground">
-          No files, identity documents, wallet signatures, or network requests
-          are collected by this demo form.
+          No wallet signature or funds are requested at intake. Review may
+          require evidence and identity information through approved providers.
         </p>
-        <button
-          type="submit"
-          disabled={!ready}
-          className="min-h-11 bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
-        >
-          Save local draft
-        </button>
+        <div className="flex flex-wrap justify-end gap-3">
+          <button
+            type="submit"
+            data-status="draft"
+            disabled={savingStatus !== null}
+            className="min-h-11 border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+          >
+            {savingStatus === "draft" ? "Saving..." : "Save draft"}
+          </button>
+          <button
+            type="submit"
+            data-status="submitted"
+            disabled={savingStatus !== null}
+            className="min-h-11 bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
+          >
+            {savingStatus === "submitted"
+              ? "Submitting..."
+              : "Submit for review"}
+          </button>
+        </div>
       </div>
     </form>
   );

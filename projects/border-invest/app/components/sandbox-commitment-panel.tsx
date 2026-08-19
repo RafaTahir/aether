@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useConnectedWallet } from "@solana/kit-plugin-wallet/react";
 import type {
-  DemoEligibilityRecord,
+  EligibilityReadinessRecord,
   SandboxCommitment,
 } from "@/src/domain/investment";
 import type { InvestmentProject } from "@/src/domain/project";
@@ -19,7 +19,7 @@ export function SandboxCommitmentPanel({
 }) {
   const client = useAppClient();
   const wallet = useConnectedWallet(client);
-  const [eligibility] = useAetherStorage<DemoEligibilityRecord | null>(
+  const [eligibility] = useAetherStorage<EligibilityReadinessRecord | null>(
     AETHER_STORAGE_KEYS.eligibility,
     null
   );
@@ -38,24 +38,24 @@ export function SandboxCommitmentPanel({
 
     if (!wallet?.account.address) {
       setError(
-        "Connect a Solana devnet wallet from the header before recording a sandbox commitment."
+        "Connect a Solana devnet wallet from the header before recording a local commitment."
       );
       return;
     }
-    if (eligibility?.status !== "demo_eligible") {
+    if (eligibility?.status !== "readiness_acknowledged") {
       setError(
-        "Complete demo eligibility first. This is a local prototype check, not legal eligibility."
+        "Record readiness first. This is not a legal eligibility decision."
       );
       return;
     }
     if (!Number.isFinite(parsedAmount) || parsedAmount < project.minimumUsd) {
       setError(
-        `Enter at least ${formatDetailedCurrency(project.minimumUsd)} for this demo project.`
+        `Enter at least ${formatDetailedCurrency(project.minimumUsd)} for this project room.`
       );
       return;
     }
     if (parsedAmount > project.targetUsd - project.fundedUsd) {
-      setError("The demo amount cannot exceed the remaining fictional target.");
+      setError("The amount cannot exceed the remaining seeded target.");
       return;
     }
 
@@ -92,13 +92,13 @@ export function SandboxCommitmentPanel({
         </span>
       </div>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        This demonstrates the intended product sequence. It stores a local
-        record only and never prepares or sends a transaction.
+        This records a local planning state only and never prepares or sends a
+        transaction.
       </p>
       <form onSubmit={recordCommitment} className="mt-6">
         <label>
           <span className="mb-2 block text-sm font-semibold">
-            Demo amount (USD)
+            Test amount (USD)
           </span>
           <input
             type="number"
@@ -120,7 +120,7 @@ export function SandboxCommitmentPanel({
             </span>
           </p>
           <p>
-            Remaining fictional target:{" "}
+            Remaining seeded target:{" "}
             <span className="font-mono tabular-nums">
               {formatDetailedCurrency(project.targetUsd - project.fundedUsd)}
             </span>
@@ -141,7 +141,7 @@ export function SandboxCommitmentPanel({
           disabled={!ready}
           className="mt-6 min-h-11 w-full bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
         >
-          Record sandbox commitment
+          Record local commitment
         </button>
       </form>
       <div className="mt-4 flex flex-wrap gap-3 text-xs font-semibold">
@@ -150,12 +150,12 @@ export function SandboxCommitmentPanel({
             Connect wallet in the header
           </span>
         )}
-        {eligibility?.status !== "demo_eligible" && (
+        {eligibility?.status !== "readiness_acknowledged" && (
           <Link
             href="/onboarding"
             className="text-primary underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-ring"
           >
-            Run demo eligibility
+            Review readiness
           </Link>
         )}
       </div>

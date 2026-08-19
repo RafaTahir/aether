@@ -9,8 +9,8 @@ import type { SandboxCommitment } from "@/src/domain/investment";
 import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 import { useAppClient } from "../lib/client-provider";
 import {
-  getConfiguredDemoEscrow,
-  prepareDemoDeposit,
+  getConfiguredDevnetEscrow,
+  prepareDevnetDeposit,
 } from "../lib/aether-escrow-client";
 import { useCluster } from "./cluster-context";
 import { ellipsify } from "../lib/explorer";
@@ -19,7 +19,8 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
   const client = useAppClient();
   const { cluster, getExplorerUrl } = useCluster();
   const wallet = useConnectedWallet(client);
-  const config = getConfiguredDemoEscrow();
+  const config = getConfiguredDevnetEscrow();
+  const projectMapped = config?.projectSlug === project.slug;
   const [, setCommitments] = useAetherStorage<SandboxCommitment[]>(
     AETHER_STORAGE_KEYS.commitments,
     []
@@ -35,12 +36,12 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
     event.preventDefault();
     setError("");
     setSignature("");
-    if (!config) {
-      setError("This deployment has no demo escrow configured yet.");
+    if (!config || !projectMapped) {
+      setError("This project has no project-bound devnet escrow configured.");
       return;
     }
     if (cluster !== "devnet") {
-      setError("Switch to Solana devnet before using the demo escrow.");
+      setError("Switch to Solana devnet before using the devnet escrow.");
       return;
     }
     if (!wallet?.account.address) {
@@ -57,7 +58,7 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
     const amountMinor = BigInt(Math.round(tokenAmount * 10 ** config.decimals));
     try {
       setStatus("preparing");
-      const prepared = await prepareDemoDeposit(
+      const prepared = await prepareDevnetDeposit(
         client,
         address(wallet.account.address),
         amountMinor
@@ -113,7 +114,7 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
         disposable SPL test mint. It is not an investment or a commitment to the
         project.
       </p>
-      {config ? (
+      {config && projectMapped ? (
         <>
           <div className="mt-5 grid gap-3 text-xs text-muted-foreground">
             <p>
@@ -190,19 +191,18 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
       ) : (
         <div className="mt-6 border border-dashed p-5">
           <p className="text-sm font-semibold">
-            Demo escrow configuration is not set for this deployment.
+            Devnet escrow configuration is not set for this deployment.
           </p>
           <p className="mt-2 text-xs leading-5 text-muted-foreground">
-            Set `NEXT_PUBLIC_AETHER_ESCROW_ADDRESS`,
-            `NEXT_PUBLIC_AETHER_ESCROW_MINT`, and
-            `NEXT_PUBLIC_AETHER_ESCROW_DECIMALS` in Vercel before enabling this
-            action.
+            Set `NEXT_PUBLIC_AETHER_ESCROW_PROJECT_SLUG` together with the
+            project-bound escrow, mint, and decimal settings before enabling
+            this action.
           </p>
           <Link
             href="/portfolio"
             className="mt-4 inline-flex min-h-10 items-center border px-3 text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring"
           >
-            Keep using local sandbox
+            Open portfolio
           </Link>
         </div>
       )}

@@ -7,12 +7,33 @@ export type ClusterMoniker = "devnet" | "testnet" | "mainnet" | "localnet";
 export const CLUSTERS: ClusterMoniker[] = ["devnet"];
 
 const CLUSTER_URLS: Record<ClusterMoniker, string> = {
-  devnet:
-    process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.devnet.solana.com",
+  devnet: getDevnetRpcUrl(),
   testnet: "https://api.testnet.solana.com",
   mainnet: "https://api.mainnet-beta.solana.com",
   localnet: "http://localhost:8899",
 };
+
+function getDevnetRpcUrl() {
+  const value =
+    process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
+  let parsed: URL;
+  try {
+    parsed = new URL(value);
+  } catch {
+    throw new Error("NEXT_PUBLIC_SOLANA_RPC_URL must be a valid URL.");
+  }
+
+  if (
+    !["http:", "https:"].includes(parsed.protocol) ||
+    /mainnet|testnet/i.test(parsed.hostname)
+  ) {
+    throw new Error(
+      "Aether accepts a devnet RPC only. Configure NEXT_PUBLIC_SOLANA_RPC_URL with a devnet endpoint."
+    );
+  }
+
+  return value;
+}
 
 const WS_URLS: Record<ClusterMoniker, string> = {
   devnet: "wss://api.devnet.solana.com",

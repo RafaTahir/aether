@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aether - Investor Briefing</title>
+  <style>
+    @page { size: 13.333in 7.5in; margin: 0; }
+    :root {
+      --bg: #0d0a06;
+      --bg-2: #171108;
+      --bg-3: #21170a;
+      --paper: #f7f1e6;
+      --paper-2: #ece1cd;
+      --gold: #f4c94f;
+      --gold-bright: #ffe59a;
+      --gold-deep: #a97515;
+      --ink: #1a140b;
+      --text: #fffaf0;
+      --muted: #c8b99a;
+      --muted-2: #8d7d61;
+      --line: rgba(244,201,79,.24);
+      --line-soft: rgba(255,250,240,.1);
+      --danger: #ef806d;
+      --green: #a8ca91;
+      --display: Georgia, 'Times New Roman', serif;
+      --sans: Arial, Helvetica, sans-serif;
+      --mono: 'IBM Plex Mono', Consolas, monospace;
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); }
+    .deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+    .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 78px 104px 72px; opacity: 0; pointer-events: none; background: var(--bg); overflow: hidden; }
+    .slide:nth-child(even) { background: var(--bg-2); }
+    .slide.active { opacity: 1; pointer-events: auto; }
+    .slide.active .animate-in { animation: reveal .55s var(--ease) both; }
+    .slide.active .animate-in:nth-child(2) { animation-delay: .08s; }
+    .slide.active .animate-in:nth-child(3) { animation-delay: .16s; }
+    .slide.active .animate-in:nth-child(4) { animation-delay: .24s; }
+    .slide.active .animate-in:nth-child(5) { animation-delay: .32s; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shine { 0%, 62%, 100% { background-position: 0 0; } 78% { background-position: 100% 0; } }
+    .gold { color: var(--gold); }
+    .gold-foil { background: linear-gradient(110deg, var(--gold-deep), var(--gold), var(--gold-bright), var(--gold-deep)); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 5s var(--ease) infinite; }
+    .eyebrow { color: var(--gold); font: 700 15px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    .caption { color: var(--muted-2); font: 700 14px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, h3, p { margin: 0; }
+    .hero { font: 500 118px/.88 var(--display); letter-spacing: -.06em; }
+    .h1 { font: 500 62px/.98 var(--display); letter-spacing: -.045em; }
+    .h2 { font: 500 43px/1.05 var(--display); letter-spacing: -.035em; }
+    .h3 { font: 600 25px/1.2 var(--sans); }
+    .body { color: var(--muted); font: 400 23px/1.42 var(--sans); }
+    .small { color: var(--muted); font: 400 17px/1.45 var(--sans); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .divider { width: 86px; height: 3px; margin: 28px 0; background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright), var(--gold-deep)); }
+    .gold-rule { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .card { border: 1px solid var(--line-soft); background: rgba(255,255,255,.035); padding: 26px; }
+    .card-gold { border-color: var(--line); background: linear-gradient(135deg, rgba(244,201,79,.13), rgba(255,255,255,.025)); }
+    .metric { border-top: 1px solid var(--line); padding-top: 16px; }
+    .metric .value { color: var(--gold); font: 500 44px/1 var(--mono); letter-spacing: -.07em; }
+    .metric .label { margin-top: 9px; color: var(--muted-2); font: 700 13px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .tag { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 1px solid var(--line); color: var(--gold-bright); font: 700 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .tag.paper { color: var(--ink); border-color: rgba(26,20,11,.18); }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 18px; background: var(--gold); color: var(--ink); font-weight: 800; text-decoration: none; }
+    .button.outline { border: 1px solid var(--line); background: transparent; color: var(--gold-bright); }
+    .footer { position: absolute; right: 104px; bottom: 30px; left: 104px; display: flex; justify-content: space-between; color: var(--muted-2); font: 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .mindmap { position: relative; min-height: 470px; }
+    .mindmap svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .mindmap path { fill: none; stroke: var(--gold); stroke-linecap: round; opacity: .58; stroke-width: 2; }
+    .mindmap path.soft { stroke: var(--muted-2); opacity: .42; }
+    .mind-node { position: absolute; display: grid; place-items: center; min-width: 138px; min-height: 55px; padding: 10px 16px; border: 1px solid var(--line); background: var(--bg-3); color: var(--gold-bright); font: 700 13px var(--mono); letter-spacing: .08em; text-align: center; text-transform: uppercase; }
+    .mind-node.center { top: 39%; left: 34%; width: 210px; height: 110px; border: 2px solid var(--gold); border-radius: 50%; background: radial-gradient(circle, rgba(244,201,79,.3), rgba(244,201,79,.08) 48%, var(--bg-3) 72%); color: var(--text); font: 600 28px var(--display); letter-spacing: -.02em; text-transform: none; }
+    .mind-node.n1 { top: 7%; left: 3%; }
+    .mind-node.n2 { top: 4%; right: 4%; }
+    .mind-node.n3 { top: 69%; left: 2%; }
+    .mind-node.n4 { top: 74%; right: 4%; }
+    .mind-node.n5 { top: 42%; right: -2%; }
+    .radial { position: relative; width: 100%; height: 450px; }
+    .radial .center { position: absolute; top: 50%; left: 50%; display: grid; width: 220px; height: 220px; place-items: center; border: 2px solid var(--gold); border-radius: 50%; background: radial-gradient(circle at 38% 28%, var(--gold-bright), var(--gold) 22%, var(--gold-deep) 58%, #6f450a 100%); color: var(--ink); font: 600 38px var(--display); text-align: center; transform: translate(-50%,-50%); box-shadow: 0 0 0 14px rgba(244,201,79,.05), 0 16px 60px rgba(244,201,79,.17); }
+    .radial svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .radial path { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; opacity: .62; }
+    .radial .leaf { position: absolute; display: grid; place-items: center; width: 220px; min-height: 60px; padding: 11px 16px; border: 1px solid var(--line); background: rgba(255,255,255,.035); color: var(--text); font: 700 15px var(--mono); letter-spacing: .06em; text-align: center; text-transform: uppercase; }
+    .radial .leaf span { display: block; margin-top: 5px; color: var(--muted); font: 400 14px var(--sans); letter-spacing: 0; text-transform: none; }
+    .radial .a { top: 0; left: 3%; } .radial .b { top: 0; right: 3%; } .radial .c { bottom: 0; left: 3%; } .radial .d { right: 3%; bottom: 0; }
+    .screenshot-frame { position: relative; overflow: hidden; border: 1px solid var(--line); background: #090704; box-shadow: 0 20px 70px rgba(0,0,0,.45); }
+    .screenshot-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .capture-chip { position: absolute; top: 14px; left: 14px; z-index: 1; padding: 7px 9px; border: 1px solid rgba(244,201,79,.5); background: rgba(13,10,6,.9); color: var(--gold-bright); font: 700 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .capture-disclosure { margin-top: 18px; color: var(--muted-2); font: 700 12px/1.35 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .proof-link { display: inline-block; margin-top: 10px; color: var(--gold); font: 700 13px var(--mono); letter-spacing: .04em; text-decoration: none; }
+    .proof-link:hover { color: var(--gold-bright); }
+    .shot-home { height: 560px; }
+    .shot-room { height: 560px; }
+    .shot-funding { height: 560px; }
+    .shot-funder { height: 560px; }
+    .callouts { display: flex; flex-direction: column; gap: 20px; }
+    .callout { display: grid; grid-template-columns: 42px 1fr; gap: 15px; align-items: start; }
+    .callout .num { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--gold); color: var(--gold); font: 700 13px var(--mono); }
+    .callout h3 { font-size: 21px; }
+    .callout p { margin-top: 5px; color: var(--muted); font-size: 17px; line-height: 1.4; }
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; }
+    .timeline::before { content: ''; position: absolute; top: 24px; right: 7%; left: 7%; height: 2px; background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright), var(--gold-deep)); }
+    .step { position: relative; z-index: 1; text-align: center; }
+    .step .dot { display: grid; width: 50px; height: 50px; margin: 0 auto 20px; place-items: center; border: 2px solid var(--gold); border-radius: 50%; background: var(--bg); color: var(--gold); font: 700 14px var(--mono); }
+    .step h3 { font-size: 22px; }
+    .step p { max-width: 220px; margin: 10px auto 0; color: var(--muted); font-size: 16px; line-height: 1.4; }
+    .source-note { position: absolute; right: 104px; bottom: 30px; left: 104px; color: var(--muted-2); font: 11px/1.3 var(--mono); }
+    .slide.paper-slide { background: var(--paper); color: var(--ink); }
+    .paper-slide .body, .paper-slide .small { color: #655945; }
+    .paper-slide .caption { color: #8b6a22; }
+    .paper-slide .card { border-color: rgba(26,20,11,.14); background: rgba(255,255,255,.35); }
+    .paper-slide .footer { color: #907f61; }
+    .paper-slide .mind-node { border-color: rgba(139,106,34,.42); background: rgba(255,255,255,.38); color: #775718; }
+    .paper-slide .mind-node.center { background: radial-gradient(circle, #ffe5a1, #d8a837 58%, #a97515 100%); color: var(--ink); }
+    .paper-slide .mindmap path { stroke: #a97515; }
+    .paper-slide .gold-rule { background: linear-gradient(90deg, transparent, #a97515, transparent); }
+    .paper-slide .radial path { stroke: #a97515; }
+    .paper-slide .radial .center { background: radial-gradient(circle at 38% 28%, #fff0bd, #f4c94f 28%, #a97515 80%); }
+    .paper-slide .radial .leaf { border-color: rgba(139,106,34,.42); background: rgba(255,255,255,.44); color: var(--ink); }
+    .paper-slide .radial .leaf span { color: #655945; }
+    .paper-slide .capture-disclosure { color: #8b6a22; }
+    .solution-slide .h1 { font-size: 52px; }
+    .solution-slide .body { font-size: 20px; line-height: 1.32; }
+    .solution-slide .callouts { gap: 12px !important; margin-top: 20px !important; }
+    .solution-slide .callout { grid-template-columns: 36px 1fr; gap: 12px; }
+    .solution-slide .callout .num { width: 32px; height: 32px; font-size: 12px; }
+    .solution-slide .callout h3 { font-size: 18px; }
+    .solution-slide .callout p { margin-top: 3px; font-size: 15px; line-height: 1.25; }
+    .product-slide .h2 { font-size: 38px; line-height: 1.02; }
+    .product-slide .divider { margin: 20px 0; }
+    .product-slide .small { font-size: 15px; line-height: 1.3; }
+    .funding-slide .h2 { font-size: 38px; line-height: 1.02; }
+    .funding-slide .divider { margin: 20px 0; }
+    .funding-slide .card { padding: 18px; }
+    .funding-slide .h3 { font-size: 21px; }
+    .funding-slide .small { font-size: 15px; line-height: 1.3; }
+    .funder-slide .h2 { font-size: 38px; line-height: 1.02; }
+    .funder-slide .body { font-size: 18px; line-height: 1.3; }
+    .funder-slide .divider { margin: 18px 0; }
+    .funder-slide .card { padding: 20px; margin-top: 18px !important; }
+    .funder-slide .ask-line { padding: 10px 0; }
+    .funder-slide .ask-line strong { font-size: 17px; }
+    .quote { padding-left: 28px; border-left: 3px solid var(--gold); color: var(--text); font: 500 35px/1.15 var(--display); }
+    .ask { display: grid; grid-template-columns: 1.2fr .8fr; gap: 70px; align-items: center; }
+    .ask-card { border: 1px solid var(--line); padding: 30px; background: rgba(244,201,79,.08); }
+    .ask-line { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-bottom: 1px solid var(--line-soft); }
+    .ask-line:last-child { border: 0; }
+    .ask-line strong { color: var(--gold-bright); font: 600 20px var(--mono); }
+    .notes { display: none; }
+    .nav-bar { position: fixed; right: 32px; bottom: 20px; left: 32px; z-index: 10; display: flex; align-items: center; justify-content: space-between; opacity: 0; transition: opacity .2s; }
+    .deck:hover .nav-bar { opacity: .7; }
+    .nav-bar button { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); background: rgba(13,10,6,.8); color: var(--muted); cursor: pointer; font: 12px var(--mono); }
+    .nav-bar .counter { color: var(--muted-2); font: 12px var(--mono); }
+    @media print {
+      html, body { overflow: visible; background: var(--bg); }
+      .deck { width: 100%; height: auto; overflow: visible; }
+      .slide { position: relative; width: 100%; height: 7.5in; min-height: 7.5in; opacity: 1 !important; pointer-events: auto; page-break-after: always; break-inside: avoid; }
+      .slide:last-of-type { page-break-after: auto; }
+      .nav-bar { display: none; }
+      .animate-in { animation: none !important; opacity: 1 !important; transform: none !important; }
+      .gold-foil, .gold-mark { animation: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+    <section class="slide active" style="padding: 92px 120px;">
+      <div class="footer"><span>AETHER / INVESTOR BRIEFING</span><span>2026</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;height:100%;">
+        <div class="animate-in">
+          <div class="eyebrow">Aether / capital with context</div>
+          <h1 class="hero gold-foil" style="margin-top:26px;">Aether</h1>
+          <div class="gold-rule" style="width:360px;margin:35px 0;"></div>
+          <p class="h2" style="max-width:650px;">Projects worth crossing borders for.</p>
+          <p class="body" style="max-width:620px;margin-top:22px;">A project-capital workspace and funding router for Southeast Asian work with a story, a scope, and a reason to move capital.</p>
+          <div style="display:flex;gap:12px;margin-top:34px;"><span class="tag">Mixed investor room</span><span class="tag">Devnet product</span></div>
+        </div>
+        <div class="mindmap animate-in">
+          <svg viewBox="0 0 700 520" aria-hidden="true"><path d="M350 270 C280 205 170 150 80 100"/><path d="M410 235 C480 170 575 130 660 100"/><path d="M330 350 C250 390 155 425 70 450"/><path d="M430 350 C510 395 590 425 670 450"/><path class="soft" d="M445 285 C535 275 610 275 680 275"/></svg>
+          <div class="mind-node center">Capital<br>with context.</div><div class="mind-node n1">Projects</div><div class="mind-node n2">Capital</div><div class="mind-node n3">Evidence</div><div class="mind-node n4">Progress</div><div class="mind-node n5">Aether</div>
+        </div>
+      </div>
+      <div class="notes">Open with the bar test: Aether helps credible projects find and understand the right capital, then keeps progress visible.</div>
+    </section>
+
+    <section class="slide paper-slide">
+      <div class="footer"><span>01 / THE PROBLEM</span><span>Fragmented capital</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1.05fr;gap:80px;align-items:center;height:100%;">
+         <div class="animate-in"><div class="caption">THE TRANSLATION TAX</div><h2 class="h1" style="margin-top:24px;max-width:760px;">Good projects are forced to translate themselves three ways.</h2><div class="divider"></div><p class="body" style="max-width:680px;">One project becomes an investor memo, a grant application, and a CSR report. The work stays the same; the language, evidence, timing, and trust requirements keep changing.</p><div style="display:flex;gap:14px;margin-top:30px;"><span class="tag paper">Fragmented capital</span><span class="tag paper">Scattered evidence</span></div></div>
+        <div class="mindmap animate-in" style="min-height:440px;"><svg viewBox="0 0 700 500" aria-hidden="true"><path d="M345 252 C260 180 155 130 60 82"/><path d="M370 245 C440 170 555 115 670 78"/><path d="M335 320 C250 365 150 410 56 455"/><path d="M405 320 C495 370 585 414 675 454"/></svg><div class="mind-node center">The<br>operator</div><div class="mind-node n1">Grants<br><span style="font:400 13px var(--sans);text-transform:none;letter-spacing:0;">rules + deadlines</span></div><div class="mind-node n2">Investors<br><span style="font:400 13px var(--sans);text-transform:none;letter-spacing:0;">terms + risk</span></div><div class="mind-node n3">CSR<br><span style="font:400 13px var(--sans);text-transform:none;letter-spacing:0;">impact + proof</span></div><div class="mind-node n4">Project<br><span style="font:400 13px var(--sans);text-transform:none;letter-spacing:0;">delivery + updates</span></div></div>
+      </div>
+      <div class="notes">The problem is not a lack of capital. It is the translation layer between credible work and fragmented capital.</div>
+    </section>
+
+    <section class="slide solution-slide">
+      <div class="footer"><span>02 / THE SOLUTION</span><span>One project room</span></div>
+      <div style="display:grid;grid-template-columns:.82fr 1.18fr;gap:70px;align-items:center;height:100%;">
+         <div class="animate-in"><div class="eyebrow">The Aether project room</div><h2 class="h1" style="margin-top:24px;max-width:720px;">Make the work legible before the capital moves.</h2><div class="divider"></div><p class="body" style="max-width:620px;">Aether keeps operator identity, place, capital model, evidence, and progress in one brief before a funding conversation begins.</p><div class="callouts" style="margin-top:28px;"><div class="callout"><span class="num">01</span><div><h3>Frame</h3><p>Define the operator, place, scope, and need.</p></div></div><div class="callout"><span class="num">02</span><div><h3>Match</h3><p>Route to the capital lane that fits.</p></div></div><div class="callout"><span class="num">03</span><div><h3>Track</h3><p>Keep milestones and updates attached.</p></div></div></div></div>
+         <div class="radial animate-in"><svg viewBox="0 0 860 450" aria-hidden="true"><path d="M430 220 C320 130 220 84 105 52"/><path d="M430 220 C540 130 640 84 755 52"/><path d="M430 240 C320 320 220 366 105 400"/><path d="M430 240 C540 320 640 366 755 400"/></svg><div class="center">Aether<br><small style="font:600 14px var(--mono);letter-spacing:.08em;text-transform:uppercase;">Project room</small></div><div class="leaf a">Operator<span>identity + place</span></div><div class="leaf b">Capital lane<span>investment + grants + CSR</span></div><div class="leaf c">Evidence<span>milestones + risks</span></div><div class="leaf d">Progress<span>updates + reporting</span></div></div>
+      </div>
+    </section>
+
+    <section class="slide product-slide" style="padding:60px 82px;">
+      <div class="footer"><span>04 / PRODUCT</span><span>Prototype evidence</span></div>
+      <div style="display:grid;grid-template-columns:1.45fr .55fr;gap:42px;align-items:center;height:100%;"><div class="screenshot-frame shot-home animate-in"><span class="capture-chip">Product capture / prototype data</span><img src="assets/aether-home.png" alt="Aether homepage with project briefs and filters" /></div><div class="animate-in"><div class="eyebrow">The wedge</div><h2 class="h2" style="margin-top:18px;">A catalog of project rooms, not a token list.</h2><div class="divider"></div><div class="metric"><div class="value">10</div><div class="label">prototype rooms</div></div><div class="metric" style="margin-top:26px;"><div class="value">8</div><div class="label">represented markets</div></div><p class="small" style="margin-top:26px;">Demo catalog counts; no user traction is implied.</p></div></div>
+    </section>
+
+    <section class="slide paper-slide" style="padding:60px 82px;">
+      <div class="footer"><span>05 / PRODUCT</span><span>Project room</span></div>
+      <div style="display:grid;grid-template-columns:1.45fr .55fr;gap:42px;align-items:center;height:100%;"><div class="screenshot-frame shot-room animate-in"><span class="capture-chip">Project room / devnet flow</span><img src="assets/aether-project-room.png" alt="Aether project room for a solar irrigation project" /></div><div class="animate-in"><div class="caption">The decision surface</div><h2 class="h2" style="margin-top:18px;">A project room holds the whole case.</h2><div class="divider"></div><div class="callouts"><div class="callout"><span class="num">01</span><div><h3>Terms</h3><p>Target, funding model, risk grade, impact.</p></div></div><div class="callout"><span class="num">02</span><div><h3>Evidence</h3><p>Milestones, updates, use of funds.</p></div></div><div class="callout"><span class="num">03</span><div><h3>Action</h3><p>Save, share, or test a devnet deposit.</p></div></div></div><p class="capture-disclosure">Devnet test-token flow; no real funds.</p></div></div>
+    </section>
+
+    <section class="slide funding-slide" style="padding:60px 82px;">
+      <div class="footer"><span>06 / CAPITAL ROUTES</span><span>Funding directory</span></div>
+      <div style="display:grid;grid-template-columns:1.5fr .5fr;gap:42px;align-items:center;height:100%;"><div class="screenshot-frame shot-funding animate-in"><span class="capture-chip">Funding router / source references</span><img src="assets/aether-funding.png" alt="Aether funding directory with official source references" /></div><div class="animate-in"><div class="eyebrow">Funding router</div><h2 class="h2" style="margin-top:18px;">Route the project to the capital lane that fits.</h2><div class="divider"></div><div class="grid-2" style="gap:18px;"><div class="card"><div class="gold h3">Investment</div><p class="small" style="margin-top:9px;">Defined financial rights for eligible capital.</p></div><div class="card"><div class="gold h3">Grants</div><p class="small" style="margin-top:9px;">Non-dilutive capital for public benefit.</p></div><div class="card"><div class="gold h3">CSR</div><p class="small" style="margin-top:9px;">Corporate budgets with reporting needs.</p></div><div class="card"><div class="gold h3">Blended</div><p class="small" style="margin-top:9px;">Multiple layers for one project.</p></div></div></div></div>
+    </section>
+
+    <section class="slide paper-slide funder-slide" style="padding:60px 82px;">
+      <div class="footer"><span>07 / DISTRIBUTION</span><span>Funder workspace</span></div>
+      <div style="display:grid;grid-template-columns:1.45fr .55fr;gap:42px;align-items:center;height:100%;"><div class="screenshot-frame shot-funder animate-in"><span class="capture-chip">Funder workspace / pilot flow</span><img src="assets/aether-funder.png" alt="Aether funder workspace with project pipeline" /></div><div class="animate-in"><div class="caption">The buyer side</div><h2 class="h2" style="margin-top:18px;">Give institutional capital a pipeline it can inspect.</h2><div class="divider"></div><p class="body" style="color:#655945;">Corporations, foundations, impact funds, and development partners can shortlist project rooms before a partnership conversation.</p><div class="card" style="margin-top:26px;"><p class="caption" style="color:#8b6a22;">Pilot workflow</p><div class="ask-line"><span>Shortlist</span><strong>projects</strong></div><div class="ask-line"><span>Compare</span><strong>mandates</strong></div><div class="ask-line"><span>Partner</span><strong>locally</strong></div></div></div></div>
+    </section>
+
+    <section class="slide">
+      <div class="footer"><span>08 / WHY SOLANA</span><span>Proof, not posture</span></div>
+      <div class="caption animate-in">WHY SOLANA</div><h2 class="h1 animate-in" style="margin-top:22px;max-width:1100px;">Use the chain for the movement record, not for the whole product.</h2><div class="divider animate-in"></div><div class="grid-2 animate-in" style="margin-top:18px;align-items:center;"><div class="radial" style="height:420px;"><svg viewBox="0 0 860 420" aria-hidden="true"><path d="M430 205 C300 100 190 65 78 45"/><path d="M430 205 C560 100 670 65 782 45"/><path d="M430 250 C300 330 190 360 78 385"/><path d="M430 250 C560 330 670 360 782 385"/></svg><div class="center" style="width:190px;height:190px;font-size:30px;">Aether<br><small style="font:600 13px var(--mono);letter-spacing:.08em;">Devnet escrow</small></div><div class="leaf a">PDA vault<span>no private key</span></div><div class="leaf b">Finality<span>public record</span></div><div class="leaf c">Pause<span>emergency control</span></div><div class="leaf d">Refund<span>before release</span></div></div><div><div class="grid-2"><div class="metric"><div class="value">100</div><div class="label">release path / deposited</div></div><div class="metric"><div class="value">60</div><div class="label">release path / released</div></div><div class="metric"><div class="value">50</div><div class="label">safety path / refunded</div></div><div class="metric"><div class="value">2</div><div class="label">finalized devnet paths</div></div></div><div class="card card-gold" style="margin-top:30px;"><p class="h3">Program proof</p><p class="small" style="margin-top:10px;">BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj</p><a class="proof-link" href="https://explorer.solana.com/address/BzxhTouVDYHDurdAV5J2fi1paES87nKY9WXVFPZ3eGKj?cluster=devnet">View on Solana Explorer / devnet</a><p class="small" style="margin-top:8px;">Two separate smoke paths; values are not a combined balance.</p><p class="small" style="margin-top:6px;">Devnet only. Upgradeable. Unaudited. Not mainnet.</p></div></div></div>
+    </section>
+
+    <section class="slide paper-slide">
+      <div class="footer"><span>09 / BUSINESS MODEL + PILOT</span><span>Build the network carefully</span></div>
+      <div class="ask"><div class="animate-in"><div class="caption">Aether economics</div><h2 class="h1" style="margin-top:22px;">Start with services.<br><span style="color:#a97515;">Earn the right to handle capital.</span></h2><div class="divider"></div><div class="grid-2" style="gap:20px;"><div class="card"><p class="h3">Origination</p><p class="small" style="margin-top:9px;">Project-side fee when a verified match closes.</p></div><div class="card"><p class="h3">Administration</p><p class="small" style="margin-top:9px;">Milestone and reporting infrastructure.</p></div><div class="card"><p class="h3">Funder access</p><p class="small" style="margin-top:9px;">Corporate and institutional subscriptions.</p></div><div class="card"><p class="h3">Capital later</p><p class="small" style="margin-top:9px;">Only with regulated partners.</p></div></div></div><div class="ask-card animate-in"><div class="caption" style="color:#8b6a22;">What we need now</div><p class="h2" style="margin-top:18px;">Find the first corridor worth owning.</p><div style="margin-top:24px;"><div class="ask-line"><span>Project operators</span><strong>5</strong></div><div class="ask-line"><span>Funder partners</span><strong>3</strong></div><div class="ask-line"><span>Initial corridor</span><strong>1</strong></div><div class="ask-line"><span>First capital lane</span><strong>Grant / CSR</strong></div></div><p class="small" style="margin-top:22px;color:#655945;">Targets for the pilot, not achieved traction.</p></div></div>
+    </section>
+
+    <section class="slide" style="justify-content:center;align-items:center;text-align:center;background:var(--bg-2);">
+      <div class="footer"><span>AETHER / CAPITAL WITH CONTEXT</span><span>10 / 10</span></div>
+      <div class="radial animate-in" style="width:900px;height:520px;"><svg viewBox="0 0 900 520" aria-hidden="true"><path d="M450 260 C310 165 185 100 60 72"/><path d="M450 260 C590 165 715 100 840 72"/><path d="M450 280 C310 375 185 420 60 450"/><path d="M450 280 C590 375 715 420 840 450"/></svg><div class="center" style="width:250px;height:250px;font-size:45px;">Aether<br><small style="font:600 14px var(--mono);letter-spacing:.1em;text-transform:uppercase;">Capital with context</small></div><div class="leaf a">Operators<span>bring the work</span></div><div class="leaf b">Funders<span>bring the mandate</span></div><div class="leaf c">Participants<span>bring the conviction</span></div><div class="leaf d">Aether<span>keeps the context</span></div></div>
+       <h1 class="h2 gold-foil animate-in" style="margin-top:-18px;">Help us own the first corridor.</h1><p class="body animate-in" style="margin-top:14px;">Five operators. Three funder partners. One capital lane. Aether keeps the context attached from the first brief to the first proof.</p><div style="display:flex;gap:12px;margin-top:28px;"><span class="tag">aether-six-azure-one.vercel.app</span><span class="tag">Solana devnet prototype</span></div>
+      <div class="notes">Close with the pilot ask: not an abstract marketplace, but one corridor, real operators, funder partners, and the discipline to make the first project room trustworthy.</div>
+    </section>
+
+    <div class="nav-bar"><button type="button" onclick="prev()">&lt; Prev</button><span class="counter"><span id="current">1</span> / <span id="total">10</span></span><button type="button" onclick="next()">Next &gt;</button></div>
+  </div>
+  <script>
+    let current = 0;
+    const slides = [...document.querySelectorAll('.slide')];
+    const total = slides.length;
+    document.getElementById('total').textContent = total;
+    function show(index) { slides.forEach((slide) => slide.classList.remove('active')); current = Math.max(0, Math.min(index, total - 1)); slides[current].classList.add('active'); document.getElementById('current').textContent = current + 1; }
+    function next() { show(current + 1); }
+    function prev() { show(current - 1); }
+    document.addEventListener('keydown', (event) => { if (event.key === 'ArrowRight' || event.key === ' ') { event.preventDefault(); next(); } if (event.key === 'ArrowLeft') { event.preventDefault(); prev(); } });
+    document.getElementById('deck').addEventListener('click', (event) => { if (event.target.closest('.nav-bar')) return; event.clientX > window.innerWidth / 2 ? next() : prev(); });
+    show(0);
+  </script>
+</body>
+</html>

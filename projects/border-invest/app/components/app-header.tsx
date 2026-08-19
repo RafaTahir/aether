@@ -78,6 +78,12 @@ export function AppHeader() {
             >
               Operator workspace
             </Link>
+            <Link
+              className="min-h-10 content-center text-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              href="/funder"
+            >
+              Funder workspace
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-2">
@@ -86,7 +92,7 @@ export function AppHeader() {
               className="mr-2 size-2 rounded-full bg-primary"
               aria-hidden="true"
             />
-            Devnet prototype
+            Solana devnet
           </span>
           <ThemeToggle />
           <WalletButton />
@@ -130,7 +136,7 @@ export function AppHeader() {
               Funder workspace
             </MobileLink>
             <MobileLink href="/onboarding" onClick={() => setMenuOpen(false)}>
-              Demo eligibility
+              Readiness review
             </MobileLink>
             <MobileLink
               href="/projects/submit"

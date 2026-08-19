@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FunderWorkspace } from "../components/funder-workspace";
 import { projects } from "@/src/data/projects";
+import { loadFunderWorkspace } from "./data";
 
 export const metadata: Metadata = {
   title: "Funder Workspace | Aether",
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
     "Review Aether project rooms as a corporate, foundation, or impact fund partner.",
 };
 
-export default function FunderPage() {
+export default async function FunderPage() {
+  const workspace = await loadFunderWorkspace();
+
   return (
     <main>
       <section className="border-b bg-brand-bg">
@@ -21,8 +24,8 @@ export default function FunderPage() {
             Build a project pipeline with a point of view.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">
-            Review fictional project rooms by market, sector, funding model,
-            risk, and milestone evidence. Shortlist the rooms worth a deeper
+            Review seeded project rooms by market, sector, funding model, risk,
+            and milestone evidence. Shortlist the rooms worth a deeper
             partnership conversation.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -42,16 +45,15 @@ export default function FunderPage() {
         </div>
       </section>
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 lg:px-8">
-        <FunderWorkspace projects={projects} />
+        <FunderWorkspace projects={projects} state={workspace} />
       </section>
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">
           <strong className="text-foreground">
             Funder workspace boundary.
           </strong>{" "}
-          This is a fictional pipeline for product design. It does not
-          constitute an offer, recommendation, diligence conclusion, or
-          commitment to fund.
+          The catalog is seeded for the current pilot. It does not constitute an
+          offer, recommendation, diligence conclusion, or commitment to fund.
         </div>
       </section>
     </main>

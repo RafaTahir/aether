@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { PortfolioView } from "../components/portfolio-view";
 import { projects } from "@/src/data/projects";
+import { loadPortfolioState } from "./data";
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const portfolio = await loadPortfolioState();
+
   return (
     <main>
       <section className="border-b bg-brand-bg">
@@ -14,8 +17,8 @@ export default function PortfolioPage() {
             Keep the projects you want to understand.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">
-            Your watchlist and sandbox records stay in this browser. Connect a
-            devnet wallet only when you want to test the prototype flow.
+            Your saved project rooms belong to your account. Wallet activity is
+            limited to the configured Solana devnet test flow.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -28,13 +31,13 @@ export default function PortfolioPage() {
               href="/onboarding"
               className="inline-flex min-h-11 items-center border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              Run demo eligibility
+              Review readiness
             </Link>
           </div>
         </div>
       </section>
       <div className="mx-auto max-w-7xl px-4 py-16 md:px-6 lg:px-8">
-        <PortfolioView projects={projects} />
+        <PortfolioView projects={projects} state={portfolio} />
       </div>
     </main>
   );

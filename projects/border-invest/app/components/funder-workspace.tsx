@@ -1,20 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { InvestmentProject } from "@/src/domain/project";
 import { formatCompactCurrency, formatPercent } from "@/src/lib/format-number";
-import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
+import type { FunderWorkspaceState } from "../funder/data";
+import { toggleFunderShortlist } from "../funder/actions";
 
 export function FunderWorkspace({
   projects,
+  state,
 }: {
   projects: InvestmentProject[];
+  state: FunderWorkspaceState;
 }) {
-  const [shortlist, setShortlist, ready] = useAetherStorage<string[]>(
-    AETHER_STORAGE_KEYS.funderShortlist,
-    []
+  const [shortlist, setShortlist] = useState(
+    state.kind === "ready" ? state.shortlist : []
   );
+  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
   const [sector, setSector] = useState("all");
   const [model, setModel] = useState("all");
   const filtered = projects.filter(
@@ -27,10 +31,43 @@ export function FunderWorkspace({
   ].sort();
 
   function toggle(projectSlug: string) {
-    setShortlist((current) =>
-      current.includes(projectSlug)
-        ? current.filter((slug) => slug !== projectSlug)
-        : [...current, projectSlug]
+    setMessage("");
+    startTransition(async () => {
+      const result = await toggleFunderShortlist(projectSlug);
+      if (result.ok) {
+        setShortlist((current) =>
+          result.shortlisted
+            ? [...current, projectSlug]
+            : current.filter((slug) => slug !== projectSlug)
+        );
+      } else {
+        setMessage(result.error);
+      }
+    });
+  }
+
+  if (state.kind !== "ready") {
+    return (
+      <div className="mt-12 border border-dashed p-10 text-center">
+        <h2 className="font-serif text-3xl font-medium">
+          {state.kind === "signed_out"
+            ? "Sign in to build a persistent pipeline."
+            : state.kind === "unconfigured"
+              ? "Funder storage is not configured."
+              : "The funder workspace could not load."}
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
+          {state.kind === "error"
+            ? state.message
+            : "Shortlists belong to your account and are not stored only in this browser."}
+        </p>
+        <Link
+          href={state.kind === "signed_out" ? "/auth?next=/funder" : "/"}
+          className="mt-6 inline-flex min-h-11 items-center bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          {state.kind === "signed_out" ? "Sign in" : "Browse project rooms"}
+        </Link>
+      </div>
     );
   }
 
@@ -80,6 +117,7 @@ export function FunderWorkspace({
               project={project}
               shortlisted={shortlist.includes(project.slug)}
               onToggle={() => toggle(project.slug)}
+              disabled={isPending}
             />
           ))}
         </div>
@@ -110,11 +148,17 @@ export function FunderWorkspace({
           >
             Explore funding sources
           </Link>
+          {message && (
+            <p
+              role="alert"
+              className="mt-4 text-sm font-medium text-destructive"
+            >
+              {message}
+            </p>
+          )}
           <p className="mt-4 text-xs leading-5 text-muted-foreground">
-            {ready
-              ? "Shortlists are saved in this browser."
-              : "Loading local shortlist..."}{" "}
-            No investment decision is made here.
+            Shortlists are saved to your account. No investment decision is made
+            here.
           </p>
         </div>
       </aside>
@@ -126,10 +170,12 @@ function FunderProjectRow({
   project,
   shortlisted,
   onToggle,
+  disabled,
 }: {
   project: InvestmentProject;
   shortlisted: boolean;
   onToggle: () => void;
+  disabled: boolean;
 }) {
   const fundedPercent = (project.fundedUsd / project.targetUsd) * 100;
   return (
@@ -174,10 +220,11 @@ function FunderProjectRow({
         <button
           type="button"
           onClick={onToggle}
+          disabled={disabled}
           aria-pressed={shortlisted}
           className="min-h-10 border px-3 text-xs font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {shortlisted ? "Shortlisted" : "Shortlist"}
+          {shortlisted ? "Shortlisted" : disabled ? "Saving..." : "Shortlist"}
         </button>
         <Link
           href={`/projects/${project.slug}`}
