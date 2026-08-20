@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function IntroHero({ accountStorage }: { accountStorage: boolean }) {
@@ -47,57 +48,39 @@ export function IntroHero({ accountStorage }: { accountStorage: boolean }) {
         </div>
 
         <div className="lg:col-span-6">
-          <div
-            className="intro-stage"
-            role="img"
-            aria-label="Aether connects operators, funders, participants, evidence, and progress around one project room"
-          >
-            <svg
-              className="intro-stage-lines"
-              viewBox="0 0 620 620"
+          <figure className="intro-film">
+            <Image
+              className="intro-film-poster"
+              src="/aether-intro-poster.png"
+              alt="Aether product film poster showing capital with context"
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
+            <video
+              className="intro-film-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
               aria-hidden="true"
+              tabIndex={-1}
             >
-              <g className="intro-orbit">
-                <ellipse cx="310" cy="310" rx="220" ry="112" />
-                <ellipse
-                  cx="310"
-                  cy="310"
-                  rx="220"
-                  ry="112"
-                  transform="rotate(60 310 310)"
-                />
-                <ellipse
-                  cx="310"
-                  cy="310"
-                  rx="220"
-                  ry="112"
-                  transform="rotate(-60 310 310)"
-                />
-              </g>
-              <g className="intro-orbit intro-orbit-reverse">
-                <circle cx="310" cy="310" r="166" />
-                <circle cx="310" cy="310" r="248" />
-              </g>
-            </svg>
-            <div className="intro-core">
-              <span className="font-serif text-4xl leading-none">Aether</span>
-              <span className="mt-3 font-mono text-[10px] font-semibold uppercase tracking-[0.18em]">
-                Project room
-              </span>
+              <source src="/aether-intro.mp4" type="video/mp4" />
+            </video>
+            <div className="intro-film-scrim" aria-hidden="true" />
+            <div className="intro-film-meta">
+              <span>Aether / product film</span>
+              <span>00:30</span>
             </div>
-            <span className="intro-node intro-node-operator">Operator</span>
-            <span className="intro-node intro-node-funder">Funder</span>
-            <span className="intro-node intro-node-evidence">Evidence</span>
-            <span className="intro-node intro-node-progress">Progress</span>
-            <span className="intro-node intro-node-participant">
-              Participant
-            </span>
-            <p className="intro-stage-note">
-              One shared surface.
-              <br />
-              Different reasons to trust it.
-            </p>
-          </div>
+            <figcaption className="intro-film-caption">
+              <span className="font-serif text-2xl">From brief to room.</span>
+              <span className="mt-2 block text-xs uppercase tracking-[0.16em]">
+                See how the context stays attached.
+              </span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>

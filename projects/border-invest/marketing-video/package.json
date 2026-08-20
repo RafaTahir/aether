@@ -1,0 +1,15 @@
+{
+  "name": "aether-marketing-film",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.ts AetherIntro out/aether-intro.mp4 --codec=h264 --crf=18 --color-space=bt709",
+    "still": "remotion still src/index.ts AetherIntro out/aether-intro-poster.png --frame=0"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "@remotion/sfx": "^4.0.514",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "latest"
+  }
+}
