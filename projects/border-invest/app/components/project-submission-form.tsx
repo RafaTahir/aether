@@ -111,7 +111,9 @@ export function ProjectSubmissionForm({
             : "Draft saved"}
         </p>
         <h2 className="mt-3 font-serif text-4xl font-medium">
-          Your project room has a durable starting point.
+          {storageMode === "browser"
+            ? "Your project room is ready to continue."
+            : "Your project room has a durable starting point."}
         </h2>
         <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
           {storageMode === "browser"
@@ -182,6 +184,7 @@ export function ProjectSubmissionForm({
           value={form.operatorName}
           onChange={(value) => update("operatorName", value)}
           placeholder="Your name or organization"
+          autoComplete="organization"
         />
         <SelectField
           label="Operator type"
@@ -308,11 +311,13 @@ function Field({
   value,
   onChange,
   placeholder,
+  autoComplete,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  autoComplete?: string;
 }) {
   return (
     <label>
@@ -322,6 +327,7 @@ function Field({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className="min-h-11 w-full border bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
       />
     </label>

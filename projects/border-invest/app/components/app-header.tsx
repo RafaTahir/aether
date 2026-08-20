@@ -151,6 +151,10 @@ export function AppHeader({ accountStorage }: { accountStorage: boolean }) {
             <MobileLink href="/operator" onClick={() => setMenuOpen(false)}>
               Operator workspace
             </MobileLink>
+            <div className="flex min-h-11 items-center justify-between border-b text-sm font-semibold sm:hidden">
+              <span>Theme</span>
+              <ThemeToggle />
+            </div>
           </div>
         </nav>
       )}

@@ -7,10 +7,18 @@ export function ShareProjectButton() {
 
   async function share() {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      if (navigator.share) {
+        await navigator.share({
+          title: document.title,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
       setState("copied");
       window.setTimeout(() => setState("idle"), 1800);
-    } catch {
+    } catch (cause) {
+      if (cause instanceof DOMException && cause.name === "AbortError") return;
       setState("error");
     }
   }

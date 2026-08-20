@@ -33,7 +33,10 @@ export function FundingReadinessChecklist({
           ...baseItems,
           "The funding model and participant rights have received legal review",
         ];
-  const [checked, setChecked] = useState<string[]>([]);
+  const [checked, setChecked] = useAetherStorage<string[]>(
+    `aether:readiness:${project.slug}:${match?.source.id ?? "none"}`,
+    []
+  );
   const [applicationId, setApplicationId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -159,7 +162,7 @@ export function FundingReadinessChecklist({
           <button
             type="button"
             onClick={createApplicationRecord}
-            disabled={isPending || progress < 100}
+            disabled={isPending || progress < 100 || applicationId !== null}
             className="min-h-11 w-full bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending

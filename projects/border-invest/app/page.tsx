@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { ProjectDiscovery } from "./components/project-discovery";
+import { IntroHero } from "./components/intro-hero";
 import { projects } from "@/src/data/projects";
 import { formatCompactCurrency } from "@/src/lib/format-number";
+import { hasSupabaseEnv } from "./lib/supabase/config";
 
 export default function Home() {
   const totalTarget = projects.reduce(
@@ -13,44 +15,12 @@ export default function Home() {
 
   return (
     <main>
-      <section className="bg-brand-bg border-b">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:px-6 md:py-24 lg:grid-cols-12 lg:px-8 lg:py-32">
-          <div className="lg:col-span-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Aether / global project capital
-            </p>
-            <h1 className="mt-8 max-w-5xl font-serif text-3xl font-medium leading-[0.94] tracking-tight sm:text-5xl md:text-7xl lg:text-8xl">
-              Projects worth crossing borders for.
-            </h1>
-          </div>
-          <div className="gold-edge flex flex-col justify-end border-l pl-6 lg:col-span-4">
-            <p className="max-w-md text-base leading-7 text-muted-foreground">
-              Discover milestone-led projects created by individuals, companies,
-              cooperatives, and public-interest entities. Review the evidence
-              before capital moves.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="#opportunities"
-                className="inline-flex min-h-11 items-center bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                Explore projects
-              </Link>
-              <Link
-                href="/how-it-works"
-                className="inline-flex min-h-11 items-center border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                How it works
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <IntroHero accountStorage={hasSupabaseEnv()} />
 
       <section aria-label="Catalog evidence" className="border-b bg-card">
         <dl className="mx-auto grid max-w-7xl divide-y px-4 md:grid-cols-3 md:divide-x md:divide-y-0 md:px-6 lg:px-8">
           <Proof
-            label="Fictional project pipeline"
+            label="Seeded catalog value"
             value={formatCompactCurrency(totalTarget)}
           />
           <Proof

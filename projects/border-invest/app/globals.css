@@ -230,6 +230,198 @@
   border-color: var(--primary);
 }
 
+.intro-stage {
+  position: relative;
+  min-height: 38rem;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--primary);
+}
+
+.intro-stage::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--primary) 16%, transparent);
+  box-shadow: 0 0 90px color-mix(in oklch, var(--primary) 22%, transparent);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.intro-stage-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.intro-stage-lines ellipse,
+.intro-stage-lines circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.32;
+}
+
+.intro-stage-lines ellipse {
+  stroke-dasharray: 2 12;
+}
+
+.intro-orbit {
+  transform-origin: 50% 50%;
+  animation: intro-orbit 30s linear infinite;
+}
+
+.intro-orbit-reverse {
+  animation-direction: reverse;
+  animation-duration: 42s;
+  opacity: 0.55;
+}
+
+.intro-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: 13rem;
+  height: 13rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow:
+    0 0 0 12px color-mix(in oklch, var(--primary) 7%, transparent),
+    0 24px 70px color-mix(in oklch, var(--primary) 20%, transparent);
+  transform: translate(-50%, -50%);
+}
+
+.intro-node {
+  position: absolute;
+  display: grid;
+  min-width: 7.5rem;
+  min-height: 2.75rem;
+  place-items: center;
+  border: 1px solid color-mix(in oklch, var(--primary) 45%, transparent);
+  background: color-mix(in oklch, var(--card) 88%, transparent);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro-node-operator {
+  top: 12%;
+  left: 8%;
+}
+
+.intro-node-funder {
+  top: 16%;
+  right: 6%;
+}
+
+.intro-node-evidence {
+  bottom: 18%;
+  left: 3%;
+}
+
+.intro-node-progress {
+  right: 6%;
+  bottom: 13%;
+}
+
+.intro-node-participant {
+  top: 50%;
+  right: -1%;
+  transform: translateY(-50%);
+}
+
+.intro-stage-note {
+  position: absolute;
+  right: 50%;
+  bottom: 2%;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-align: right;
+  text-transform: uppercase;
+  transform: translateX(50%);
+}
+
+@keyframes intro-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .intro-stage {
+    min-height: 25rem;
+  }
+
+  .intro-core {
+    width: 9.5rem;
+    height: 9.5rem;
+  }
+
+  .intro-node {
+    min-width: 5.8rem;
+    min-height: 2.4rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+  }
+
+  .intro-node-operator {
+    top: 8%;
+    left: 1%;
+  }
+
+  .intro-node-funder {
+    top: 12%;
+    right: 1%;
+  }
+
+  .intro-node-evidence {
+    bottom: 16%;
+    left: 0;
+  }
+
+  .intro-node-progress {
+    right: 0;
+    bottom: 10%;
+  }
+
+  .intro-node-participant {
+    top: 50%;
+    right: -1rem;
+  }
+
+  .intro-stage-note {
+    bottom: 0;
+    font-size: 0.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-orbit {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gold-sheen,
   .gold-mark {

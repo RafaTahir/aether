@@ -71,10 +71,13 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
     return (
       <div className="relative" ref={ref}>
         <button
+          type="button"
           onClick={() => (isOpen ? close() : open())}
           className="min-h-10 shrink-0 cursor-pointer whitespace-nowrap rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-4"
           aria-expanded={isOpen}
           aria-haspopup="menu"
+          aria-controls="wallet-menu"
+          aria-busy={status === "connecting"}
         >
           {compact ? (
             <>
@@ -87,7 +90,11 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-border-low bg-card p-3 shadow-lg">
+          <div
+            id="wallet-menu"
+            role="menu"
+            className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-border-low bg-card p-3 shadow-lg"
+          >
             <p className="mb-2 text-xs font-medium text-muted-foreground">
               Choose a wallet
             </p>
@@ -99,6 +106,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
               <div className="space-y-1">
                 {wallets.map((wallet) => (
                   <button
+                    type="button"
                     key={wallet.name}
                     onClick={() => {
                       connect(wallet);
@@ -106,6 +114,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
                     }}
                     disabled={status === "connecting"}
                     className="flex min-h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors hover:bg-cream focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    role="menuitem"
                   >
                     {wallet.icon && (
                       // eslint-disable-next-line @next/next/no-img-element -- wallet-standard icons are data URIs
@@ -139,10 +148,12 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
   return (
     <div className="relative" ref={ref}>
       <button
+        type="button"
         onClick={() => (isOpen ? close() : open())}
         className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border bg-card px-3 py-2 text-xs font-medium transition-colors hover:bg-cream focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         aria-expanded={isOpen}
         aria-haspopup="menu"
+        aria-controls="wallet-menu"
       >
         <span
           className="h-2 w-2 rounded-full bg-green-500"
@@ -154,7 +165,11 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-border-low bg-card p-4 shadow-lg">
+        <div
+          id="wallet-menu"
+          role="menu"
+          className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-border-low bg-card p-4 shadow-lg"
+        >
           <div className="mb-3">
             <p className="text-xs text-muted-foreground">Balance</p>
             <p className="text-lg font-bold tabular-nums">
@@ -176,7 +191,9 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
 
           <div className="flex gap-2">
             <button
+              type="button"
               onClick={handleCopy}
+              role="menuitem"
               className="min-h-10 flex-1 cursor-pointer rounded-lg border bg-card px-3 py-2 text-xs font-medium transition-colors hover:bg-cream focus-visible:ring-2 focus-visible:ring-ring"
             >
               {copied ? "Copied!" : "Copy address"}
@@ -185,6 +202,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
               href={getExplorerUrl(`/address/${walletAddress}`)}
               target="_blank"
               rel="noopener noreferrer"
+              role="menuitem"
               className="inline-flex min-h-10 flex-1 items-center justify-center rounded-lg border bg-card px-3 py-2 text-center text-xs font-medium transition-colors hover:bg-cream focus-visible:ring-2 focus-visible:ring-ring"
             >
               Explorer
@@ -192,10 +210,12 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
           </div>
 
           <button
+            type="button"
             onClick={() => {
               disconnect();
               close();
             }}
+            role="menuitem"
             className="mt-2 min-h-10 w-full cursor-pointer rounded-lg border bg-card px-3 py-2 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Disconnect
