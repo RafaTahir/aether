@@ -48,5 +48,16 @@ export type ProjectDraft = {
   targetUsd: number;
   summary: string;
   createdAt: string;
+  status: "draft" | "submitted";
+};
+
+export type LocalFundingApplication = {
+  id: string;
+  projectSlug: string;
+  projectName: string;
+  sourceId: string;
+  sourceName: string;
   status: "draft";
+  createdAt: string;
+  updatedAt: string;
 };

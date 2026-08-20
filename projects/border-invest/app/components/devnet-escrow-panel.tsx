@@ -32,6 +32,8 @@ export function DevnetEscrowPanel({ project }: { project: InvestmentProject }) {
   const [signature, setSignature] = useState("");
   const [error, setError] = useState("");
 
+  if (!config || !projectMapped) return null;
+
   async function deposit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");

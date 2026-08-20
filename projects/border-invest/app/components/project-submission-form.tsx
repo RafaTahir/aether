@@ -7,6 +7,8 @@ import {
   type ProjectSubmissionInput,
   type ProjectSubmissionStatus,
 } from "../projects/submit/actions";
+import type { ProjectDraft } from "@/src/domain/investment";
+import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 
 const countries = [
   "Philippines",
@@ -40,7 +42,15 @@ const emptyForm: FormState = {
   termsAccepted: false,
 };
 
-export function ProjectSubmissionForm() {
+export function ProjectSubmissionForm({
+  storageMode,
+}: {
+  storageMode: "account" | "browser";
+}) {
+  const [, setLocalDrafts, localReady] = useAetherStorage<ProjectDraft[]>(
+    AETHER_STORAGE_KEYS.projectDrafts,
+    []
+  );
   const [form, setForm] = useState<FormState>(emptyForm);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState<{
@@ -61,6 +71,28 @@ export function ProjectSubmissionForm() {
     event.preventDefault();
     setError("");
     setSavingStatus(status);
+    if (storageMode === "browser") {
+      const targetUsd = Number(form.targetUsd);
+      const id = `local-${Date.now()}`;
+      const draft: ProjectDraft = {
+        id,
+        projectName: form.projectName.trim(),
+        operatorName: form.operatorName.trim(),
+        operatorType: form.operatorType as ProjectDraft["operatorType"],
+        country: form.country,
+        sector: form.sector,
+        fundingCadence: form.fundingCadence as ProjectDraft["fundingCadence"],
+        fundingModel: form.fundingModel as ProjectDraft["fundingModel"],
+        targetUsd,
+        summary: form.summary.trim(),
+        createdAt: new Date().toISOString(),
+        status,
+      };
+      setLocalDrafts((current) => [...current, draft]);
+      setSaved({ id, status });
+      setSavingStatus(null);
+      return;
+    }
     const result = await createProjectSubmission(form, status);
     if (result.ok) {
       setSaved({ id: result.submission.id, status });
@@ -82,8 +114,9 @@ export function ProjectSubmissionForm() {
           Your project room has a durable starting point.
         </h2>
         <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-          Submission {saved.id} is stored in Aether. It is now visible in your
-          operator workspace with its current review state.
+          {storageMode === "browser"
+            ? `Submission ${saved.id} is stored in this browser and is available in the local operator workspace.`
+            : `Submission ${saved.id} is stored in Aether and is now visible in your operator workspace with its current review state.`}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -129,13 +162,13 @@ export function ProjectSubmissionForm() {
           </h2>
         </div>
         <span className="bg-secondary px-2 py-1 text-[10px] font-semibold uppercase tracking-wider">
-          Pilot intake
+          {storageMode === "account" ? "Account intake" : "Browser workspace"}
         </span>
       </div>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground">
         Give participants enough context to inspect the work. A submitted room
-        enters a reviewer queue; evidence, identity checks, and legal review are
-        handled as separate review stages.
+        enters a reviewer queue when account storage is configured; browser mode
+        keeps the complete working flow available on this device.
       </p>
       <div className="mt-8 grid gap-5 md:grid-cols-2">
         <Field
@@ -241,14 +274,15 @@ export function ProjectSubmissionForm() {
       )}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t pt-5">
         <p className="max-w-md text-xs leading-5 text-muted-foreground">
-          No wallet signature or funds are requested at intake. Review may
-          require evidence and identity information through approved providers.
+          No wallet signature or funds are requested at intake. Account review
+          may require evidence and identity information through approved
+          providers.
         </p>
         <div className="flex flex-wrap justify-end gap-3">
           <button
             type="submit"
             data-status="draft"
-            disabled={savingStatus !== null}
+            disabled={savingStatus !== null || !localReady}
             className="min-h-11 border bg-card px-5 text-sm font-semibold hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
             {savingStatus === "draft" ? "Saving..." : "Save draft"}
@@ -256,7 +290,7 @@ export function ProjectSubmissionForm() {
           <button
             type="submit"
             data-status="submitted"
-            disabled={savingStatus !== null}
+            disabled={savingStatus !== null || !localReady}
             className="min-h-11 bg-primary px-5 text-sm font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
           >
             {savingStatus === "submitted"

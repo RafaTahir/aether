@@ -46,7 +46,7 @@ export default async function AdminProjectsPage() {
           <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Reviewer workspace
           </p>
-          <h1 className="mt-5 max-w-4xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+          <h1 className="mt-5 max-w-4xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
             Review project rooms before they become public.
           </h1>
         </div>

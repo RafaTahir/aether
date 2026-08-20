@@ -6,6 +6,7 @@ import type { InvestmentProject } from "@/src/domain/project";
 import { formatCompactCurrency, formatPercent } from "@/src/lib/format-number";
 import type { FunderWorkspaceState } from "../funder/data";
 import { toggleFunderShortlist } from "../funder/actions";
+import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 
 export function FunderWorkspace({
   projects,
@@ -17,8 +18,13 @@ export function FunderWorkspace({
   const [shortlist, setShortlist] = useState(
     state.kind === "ready" ? state.shortlist : []
   );
+  const [localShortlist, setLocalShortlist, localReady] = useAetherStorage<
+    string[]
+  >(AETHER_STORAGE_KEYS.funderShortlist, []);
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
+  const browserMode = state.kind === "unconfigured";
+  const activeShortlist = browserMode ? localShortlist : shortlist;
   const [sector, setSector] = useState("all");
   const [model, setModel] = useState("all");
   const filtered = projects.filter(
@@ -32,6 +38,14 @@ export function FunderWorkspace({
 
   function toggle(projectSlug: string) {
     setMessage("");
+    if (browserMode) {
+      setLocalShortlist((current) =>
+        current.includes(projectSlug)
+          ? current.filter((slug) => slug !== projectSlug)
+          : [...current, projectSlug]
+      );
+      return;
+    }
     startTransition(async () => {
       const result = await toggleFunderShortlist(projectSlug);
       if (result.ok) {
@@ -46,15 +60,13 @@ export function FunderWorkspace({
     });
   }
 
-  if (state.kind !== "ready") {
+  if (state.kind !== "ready" && !browserMode) {
     return (
       <div className="mt-12 border border-dashed p-10 text-center">
         <h2 className="font-serif text-3xl font-medium">
           {state.kind === "signed_out"
             ? "Sign in to build a persistent pipeline."
-            : state.kind === "unconfigured"
-              ? "Funder storage is not configured."
-              : "The funder workspace could not load."}
+            : "The funder workspace could not load."}
         </h2>
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
           {state.kind === "error"
@@ -115,9 +127,9 @@ export function FunderWorkspace({
             <FunderProjectRow
               key={project.id}
               project={project}
-              shortlisted={shortlist.includes(project.slug)}
+              shortlisted={activeShortlist.includes(project.slug)}
               onToggle={() => toggle(project.slug)}
-              disabled={isPending}
+              disabled={isPending || (browserMode && !localReady)}
             />
           ))}
         </div>
@@ -136,7 +148,7 @@ export function FunderWorkspace({
           </p>
           <dl className="mt-6 divide-y border-y">
             <Metric label="Project rooms" value={`${projects.length}`} />
-            <Metric label="Shortlisted" value={`${shortlist.length}`} />
+            <Metric label="Shortlisted" value={`${activeShortlist.length}`} />
             <Metric
               label="Markets"
               value={`${new Set(projects.map((project) => project.country)).size}`}
@@ -157,8 +169,10 @@ export function FunderWorkspace({
             </p>
           )}
           <p className="mt-4 text-xs leading-5 text-muted-foreground">
-            Shortlists are saved to your account. No investment decision is made
-            here.
+            {browserMode
+              ? "Shortlists are saved in this browser until account storage is connected."
+              : "Shortlists are saved to your account."}{" "}
+            No investment decision is made here.
           </p>
         </div>
       </aside>

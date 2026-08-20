@@ -66,7 +66,7 @@ export default async function AdminFundingPage() {
           <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Admin / source governance
           </p>
-          <h1 className="mt-5 max-w-5xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+          <h1 className="mt-5 max-w-5xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
             Keep the directory worthy of trust.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">

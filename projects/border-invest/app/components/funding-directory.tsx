@@ -14,9 +14,11 @@ import { FundingReadinessChecklist } from "./funding-readiness-checklist";
 export function FundingDirectory({
   sources,
   projects,
+  storageMode,
 }: {
   sources: FundingSource[];
   projects: InvestmentProject[];
+  storageMode: "account" | "browser";
 }) {
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<FundingSourceKind | "all">("all");
@@ -184,6 +186,7 @@ export function FundingDirectory({
             key={`${selectedProject.slug}-${selectedMatch?.source.id ?? "none"}`}
             project={selectedProject}
             match={selectedMatch}
+            storageMode={storageMode}
           />
         ) : (
           <div className="border border-dashed p-6">

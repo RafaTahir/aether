@@ -67,7 +67,7 @@ export default async function ProjectPage({
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 {project.city}, {project.country} / {project.sector}
               </p>
-              <h1 className="mt-5 max-w-5xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+              <h1 className="mt-5 max-w-5xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
                 {project.name}
               </h1>
             </div>
@@ -103,6 +103,7 @@ export default async function ProjectPage({
               <SaveProjectButton
                 projectSlug={project.slug}
                 initialSaved={savedState.saved}
+                storageMode={savedState.mode}
               />
               <ShareProjectButton />
             </div>

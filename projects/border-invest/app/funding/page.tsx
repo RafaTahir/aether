@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FundingDirectory } from "../components/funding-directory";
 import { projects } from "@/src/data/projects";
 import { loadFundingSources } from "../lib/funding-source-loader";
+import { hasSupabaseEnv } from "../lib/supabase/config";
 
 export const metadata: Metadata = {
   title: "Funding Directory | Aether",
@@ -19,7 +20,7 @@ export default async function FundingPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Funding directory / verified references
           </p>
-          <h1 className="mt-6 max-w-5xl font-serif text-5xl font-medium leading-[0.94] tracking-tight md:text-7xl">
+          <h1 className="mt-6 max-w-5xl font-serif text-3xl font-medium leading-[0.94] tracking-tight sm:text-5xl md:text-7xl">
             Find the money that fits the work.
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground">
@@ -51,7 +52,11 @@ export default async function FundingPage() {
         </dl>
       </section>
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 lg:px-8">
-        <FundingDirectory sources={fundingSources} projects={projects} />
+        <FundingDirectory
+          sources={fundingSources}
+          projects={projects}
+          storageMode={hasSupabaseEnv() ? "account" : "browser"}
+        />
       </section>
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">

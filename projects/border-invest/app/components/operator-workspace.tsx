@@ -1,19 +1,26 @@
+"use client";
+
 import Link from "next/link";
 import { formatDetailedCurrency } from "@/src/lib/format-number";
+import type { ProjectDraft } from "@/src/domain/investment";
 import type { OperatorWorkspaceState } from "../operator/data";
+import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 
 export function OperatorWorkspace({
   state,
 }: {
   state: OperatorWorkspaceState;
 }) {
+  const [localDrafts, setLocalDrafts, localReady] = useAetherStorage<
+    ProjectDraft[]
+  >(AETHER_STORAGE_KEYS.projectDrafts, []);
+
   if (state.kind === "unconfigured") {
     return (
-      <WorkspaceMessage
-        title="Connect the intake workspace"
-        body="Supabase is not configured for this deployment. Add the project URL and anon key before accepting operator submissions."
-        href="/auth"
-        label="Open sign in"
+      <LocalOperatorWorkspace
+        drafts={localDrafts}
+        ready={localReady}
+        setDrafts={setLocalDrafts}
       />
     );
   }
@@ -102,6 +109,84 @@ export function OperatorWorkspace({
                 ? `Submitted ${formatDate(submission.submitted_at)}`
                 : "Not submitted for review"}
             </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function LocalOperatorWorkspace({
+  drafts,
+  ready,
+  setDrafts,
+}: {
+  drafts: ProjectDraft[];
+  ready: boolean;
+  setDrafts: (
+    next: ProjectDraft[] | ((current: ProjectDraft[]) => ProjectDraft[])
+  ) => void;
+}) {
+  if (!ready) return <div className="mt-10 h-56 animate-pulse bg-secondary" />;
+  if (drafts.length === 0) {
+    return (
+      <WorkspaceMessage
+        title="No browser rooms yet"
+        body="Create a project room to explore the full intake flow on this device. Connect Supabase later to make it account-backed and reviewable by your team."
+        href="/projects/submit"
+        label="Start a project room"
+      />
+    );
+  }
+
+  return (
+    <div className="mt-10 border-y divide-y">
+      <div className="flex flex-wrap items-center justify-between gap-3 py-4 text-xs text-muted-foreground">
+        <span className="font-semibold uppercase tracking-widest">
+          Browser workspace
+        </span>
+        <span>
+          {drafts.length} room{drafts.length === 1 ? "" : "s"}
+        </span>
+      </div>
+      {drafts.map((draft) => (
+        <article
+          key={draft.id}
+          className="grid gap-5 py-6 md:grid-cols-[1fr_auto]"
+        >
+          <div>
+            <div className="flex flex-wrap gap-2 text-xs font-semibold">
+              <span className="bg-primary/10 px-2 py-1 capitalize text-primary">
+                {draft.status}
+              </span>
+              <span className="bg-secondary px-2 py-1">
+                {draft.fundingModel}
+              </span>
+            </div>
+            <h2 className="mt-3 font-serif text-3xl font-medium">
+              {draft.projectName}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {draft.operatorName} / {draft.country} / {draft.sector}
+            </p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground">
+              {draft.summary}
+            </p>
+          </div>
+          <div className="md:text-right">
+            <p className="text-xs text-muted-foreground">Funding target</p>
+            <p className="mt-2 font-mono text-xl font-medium tabular-nums">
+              {formatDetailedCurrency(draft.targetUsd)}
+            </p>
+            <button
+              type="button"
+              onClick={() =>
+                setDrafts(drafts.filter((item) => item.id !== draft.id))
+              }
+              className="mt-5 min-h-10 border px-3 text-xs font-semibold text-destructive hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Remove room
+            </button>
           </div>
         </article>
       ))}

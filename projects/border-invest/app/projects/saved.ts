@@ -6,12 +6,14 @@ import { createSupabaseServerClient } from "../lib/supabase/server";
 
 export async function getSavedProjectState(projectSlug: string) {
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return { authenticated: false, saved: false };
+  if (!supabase)
+    return { mode: "browser" as const, authenticated: false, saved: false };
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { authenticated: false, saved: false };
+  if (!user)
+    return { mode: "account" as const, authenticated: false, saved: false };
 
   const { data, error } = await supabase
     .from("saved_projects")
@@ -20,7 +22,11 @@ export async function getSavedProjectState(projectSlug: string) {
     .eq("project_slug", projectSlug)
     .maybeSingle();
 
-  return { authenticated: true, saved: !error && Boolean(data) };
+  return {
+    mode: "account" as const,
+    authenticated: true,
+    saved: !error && Boolean(data),
+  };
 }
 
 export async function toggleSavedProject(projectSlug: string) {

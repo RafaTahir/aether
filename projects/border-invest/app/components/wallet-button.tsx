@@ -18,7 +18,7 @@ const solFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 5,
 });
 
-export function WalletButton() {
+export function WalletButton({ compact = false }: { compact?: boolean }) {
   const client = useAppClient();
   const wallets = useWallets(client);
   const status = useWalletStatus(client);
@@ -72,11 +72,18 @@ export function WalletButton() {
       <div className="relative" ref={ref}>
         <button
           onClick={() => (isOpen ? close() : open())}
-          className="min-h-10 cursor-pointer rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="min-h-10 shrink-0 cursor-pointer whitespace-nowrap rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-4"
           aria-expanded={isOpen}
           aria-haspopup="menu"
         >
-          Connect Wallet
+          {compact ? (
+            <>
+              <span className="sm:hidden">Wallet</span>
+              <span className="hidden sm:inline">Connect Wallet</span>
+            </>
+          ) : (
+            "Connect Wallet"
+          )}
         </button>
 
         {isOpen && (

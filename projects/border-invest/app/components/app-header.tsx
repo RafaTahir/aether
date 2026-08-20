@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { WalletButton } from "./wallet-button";
 
-export function AppHeader() {
+export function AppHeader({ accountStorage }: { accountStorage: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6 lg:px-8">
-        <div className="flex items-center gap-8">
+        <div className="flex min-w-0 items-center gap-8">
           <Link
             href="/"
             className="flex min-h-10 items-center gap-3 focus-visible:ring-2 focus-visible:ring-ring"
@@ -86,21 +86,25 @@ export function AppHeader() {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <span className="hidden min-h-10 items-center border px-3 text-xs font-medium text-muted-foreground sm:inline-flex">
             <span
               className="mr-2 size-2 rounded-full bg-primary"
               aria-hidden="true"
             />
+            {accountStorage ? "Account workspace" : "Browser workspace"} /
             Solana devnet
           </span>
-          <ThemeToggle />
-          <WalletButton />
+          <span className="hidden sm:inline-flex">
+            <ThemeToggle />
+          </span>
+          <WalletButton compact />
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
             className="inline-flex min-h-10 items-center border px-3 text-xs font-semibold lg:hidden focus-visible:ring-2 focus-visible:ring-ring"
           >
             Menu

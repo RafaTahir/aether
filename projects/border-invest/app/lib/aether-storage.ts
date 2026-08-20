@@ -14,6 +14,7 @@ export const AETHER_STORAGE_KEYS = {
   eligibility: "aether:readiness-record",
   projectDrafts: "aether:project-drafts",
   funderShortlist: "aether:funder-shortlist",
+  fundingApplications: "aether:funding-applications",
   fundingReviewOverrides: "aether:funding-review-overrides",
 } as const;
 

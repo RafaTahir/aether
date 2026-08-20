@@ -19,7 +19,7 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Aether / global project capital
             </p>
-            <h1 className="mt-8 max-w-5xl font-serif text-5xl font-medium leading-[0.94] tracking-tight md:text-7xl lg:text-8xl">
+            <h1 className="mt-8 max-w-5xl font-serif text-3xl font-medium leading-[0.94] tracking-tight sm:text-5xl md:text-7xl lg:text-8xl">
               Projects worth crossing borders for.
             </h1>
           </div>
@@ -141,6 +141,54 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="border-y bg-card" aria-labelledby="ecosystem-paths">
+        <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                One room, different next steps
+              </p>
+              <h2
+                id="ecosystem-paths"
+                className="mt-4 max-w-xl font-serif text-4xl font-medium leading-none tracking-tight md:text-6xl"
+              >
+                Everyone sees the work from the side they own.
+              </h2>
+            </div>
+            <p className="max-w-xl text-base leading-7 text-muted-foreground lg:col-span-5 lg:col-start-8">
+              Aether keeps the project context stable while operators, funders,
+              and participants move through different decisions.
+            </p>
+          </div>
+          <ol className="mt-12 grid border-y md:grid-cols-3 md:divide-x">
+            <StakeholderPath
+              number="01"
+              eyebrow="For operators"
+              title="Build the room"
+              body="Define the work, evidence, milestones, and funding need."
+              href="/projects/submit"
+              label="Submit a project"
+            />
+            <StakeholderPath
+              number="02"
+              eyebrow="For funders"
+              title="Read the pipeline"
+              body="Compare project context, capital lanes, risk, and readiness."
+              href="/funder"
+              label="Open funder workspace"
+            />
+            <StakeholderPath
+              number="03"
+              eyebrow="For participants"
+              title="Keep the thread"
+              body="Save rooms, review readiness, and follow the evidence trail."
+              href="/portfolio"
+              label="Open portfolio"
+            />
+          </ol>
+        </div>
+      </section>
+
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-10 text-xs leading-5 text-muted-foreground md:px-6 lg:px-8">
           <strong className="text-foreground">Current product boundary.</strong>{" "}
@@ -162,6 +210,50 @@ function Proof({ label, value }: { label: string; value: string }) {
         {value}
       </dd>
     </div>
+  );
+}
+
+function StakeholderPath({
+  number,
+  eyebrow,
+  title,
+  body,
+  href,
+  label,
+}: {
+  number: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+  label: string;
+}) {
+  return (
+    <li className="flex min-h-64 flex-col justify-between p-6 md:p-8">
+      <div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="font-mono text-xs tabular-nums text-muted-foreground">
+            {number}
+          </span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            {eyebrow}
+          </span>
+        </div>
+        <h3 className="mt-12 font-serif text-3xl font-medium">{title}</h3>
+        <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">
+          {body}
+        </p>
+      </div>
+      <Link
+        href={href}
+        className="mt-8 inline-flex min-h-10 items-center self-start border-b border-foreground text-sm font-semibold focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        {label}{" "}
+        <span className="ml-3" aria-hidden="true">
+          -&gt;
+        </span>
+      </Link>
+    </li>
   );
 }
 

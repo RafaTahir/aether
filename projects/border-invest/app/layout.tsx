@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./components/providers";
 import { AppHeader } from "./components/app-header";
 import { AppFooter } from "./components/app-footer";
+import { hasSupabaseEnv } from "./lib/supabase/config";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,7 +43,7 @@ export default function RootLayout({
       >
         <Providers>
           <div className="min-h-screen bg-background text-foreground">
-            <AppHeader />
+            <AppHeader accountStorage={hasSupabaseEnv()} />
             {children}
             <AppFooter />
           </div>

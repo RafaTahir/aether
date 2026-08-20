@@ -12,7 +12,7 @@ export default async function OperatorPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Operator workspace
           </p>
-          <h1 className="mt-5 max-w-4xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+          <h1 className="mt-5 max-w-4xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
             A project room starts as a clear brief.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">

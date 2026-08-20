@@ -3,7 +3,9 @@
 import { useState, useTransition } from "react";
 import type { FundingMatch } from "@/src/domain/funding";
 import type { InvestmentProject } from "@/src/domain/project";
+import type { LocalFundingApplication } from "@/src/domain/investment";
 import { createFundingApplication } from "../funding/actions";
+import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 
 const baseItems = [
   "Operator identity and entity details are ready",
@@ -15,9 +17,11 @@ const baseItems = [
 export function FundingReadinessChecklist({
   project,
   match,
+  storageMode,
 }: {
   project: InvestmentProject;
   match?: FundingMatch;
+  storageMode: "account" | "browser";
 }) {
   const items =
     match?.source.kind === "Multilateral grant"
@@ -33,6 +37,10 @@ export function FundingReadinessChecklist({
   const [applicationId, setApplicationId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [, setLocalApplications] = useAetherStorage<LocalFundingApplication[]>(
+    AETHER_STORAGE_KEYS.fundingApplications,
+    []
+  );
   const progress = Math.round((checked.length / items.length) * 100);
 
   function toggle(item: string) {
@@ -52,6 +60,25 @@ export function FundingReadinessChecklist({
       return;
     }
     setMessage("");
+    if (storageMode === "browser") {
+      const id = `local-application-${Date.now()}`;
+      setLocalApplications((current) => [
+        ...current,
+        {
+          id,
+          projectSlug: project.slug,
+          projectName: project.name,
+          sourceId: match.source.id,
+          sourceName: match.source.name,
+          status: "draft",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ]);
+      setApplicationId(id);
+      setMessage("Application record saved in this browser workspace.");
+      return;
+    }
     startTransition(async () => {
       const result = await createFundingApplication(
         project.slug,
@@ -86,8 +113,8 @@ export function FundingReadinessChecklist({
         </span>
       </div>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        A local checklist for {project.name}. Completing it does not submit an
-        application or establish eligibility.
+        A readiness checklist for {project.name}. Completing it does not submit
+        an application or establish eligibility.
       </p>
       <div
         className="mt-5 h-1.5 bg-secondary"
@@ -142,8 +169,10 @@ export function FundingReadinessChecklist({
                 : "Create application record"}
           </button>
           <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            This records your preparation in Aether. It does not submit an
-            external application or establish legal eligibility.
+            This records your preparation{" "}
+            {storageMode === "browser" ? "in this browser" : "in Aether"}. It
+            does not submit an external application or establish legal
+            eligibility.
           </p>
           {message && (
             <p role="status" className="mt-3 text-sm font-medium text-primary">

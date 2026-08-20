@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { ProjectSubmissionForm } from "../../components/project-submission-form";
+import { hasSupabaseEnv } from "../../lib/supabase/config";
 
 export default function SubmitProjectPage() {
+  const storageMode = hasSupabaseEnv() ? "account" : "browser";
+
   return (
     <main>
       <section className="border-b bg-brand-bg">
@@ -17,7 +20,7 @@ export default function SubmitProjectPage() {
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 For project operators
               </p>
-              <h1 className="mt-5 max-w-5xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+              <h1 className="mt-5 max-w-5xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
                 Bring a plan people can inspect.
               </h1>
             </div>
@@ -56,7 +59,7 @@ export default function SubmitProjectPage() {
             </ol>
           </div>
           <div className="lg:col-span-8">
-            <ProjectSubmissionForm />
+            <ProjectSubmissionForm storageMode={storageMode} />
           </div>
         </div>
       </section>

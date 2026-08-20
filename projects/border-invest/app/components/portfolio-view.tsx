@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import type { InvestmentProject } from "@/src/domain/project";
-import type { SandboxCommitment } from "@/src/domain/investment";
+import type {
+  LocalFundingApplication,
+  SandboxCommitment,
+} from "@/src/domain/investment";
 import { formatDetailedCurrency } from "@/src/lib/format-number";
 import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 import type { PortfolioApplication, PortfolioState } from "../portfolio/data";
@@ -15,18 +18,24 @@ export function PortfolioView({
   projects: InvestmentProject[];
   state: PortfolioState;
 }) {
+  const [localSavedSlugs, , savedReady] = useAetherStorage<string[]>(
+    AETHER_STORAGE_KEYS.savedProjects,
+    []
+  );
+  const [localApplications, , applicationsReady] = useAetherStorage<
+    LocalFundingApplication[]
+  >(AETHER_STORAGE_KEYS.fundingApplications, []);
   const [commitments, , commitmentsReady] = useAetherStorage<
     SandboxCommitment[]
   >(AETHER_STORAGE_KEYS.commitments, []);
-  if (state.kind !== "ready") {
+  const browserMode = state.kind === "unconfigured";
+  if (state.kind !== "ready" && !browserMode) {
     return (
       <div className="border border-dashed p-10 text-center">
         <h2 className="font-serif text-3xl font-medium">
           {state.kind === "signed_out"
             ? "Sign in to access your portfolio."
-            : state.kind === "unconfigured"
-              ? "Portfolio storage is not configured."
-              : "The portfolio could not load."}
+            : "The portfolio could not load."}
         </h2>
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
           {state.kind === "error"
@@ -43,10 +52,23 @@ export function PortfolioView({
     );
   }
 
-  const saved = projects.filter((project) =>
-    state.savedSlugs.includes(project.slug)
-  );
-  const ready = commitmentsReady;
+  const savedSlugs =
+    browserMode || state.kind !== "ready" ? localSavedSlugs : state.savedSlugs;
+  const applications: PortfolioApplication[] = browserMode
+    ? localApplications.map((application) => ({
+        id: application.id,
+        project_slug: application.projectSlug,
+        source_id: application.sourceId,
+        source_name: application.sourceName,
+        status: application.status,
+        created_at: application.createdAt,
+        updated_at: application.updatedAt,
+      }))
+    : state.kind === "ready"
+      ? state.applications
+      : [];
+  const saved = projects.filter((project) => savedSlugs.includes(project.slug));
+  const ready = commitmentsReady && savedReady && applicationsReady;
 
   if (!ready) {
     return (
@@ -90,10 +112,7 @@ export function PortfolioView({
       </section>
 
       <section className="space-y-12 lg:col-span-5">
-        <ApplicationList
-          applications={state.applications}
-          projects={projects}
-        />
+        <ApplicationList applications={applications} projects={projects} />
         <section className="border-t pt-12">
           <div className="flex items-end justify-between gap-4 border-b pb-4">
             <div>

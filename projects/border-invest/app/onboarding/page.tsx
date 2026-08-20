@@ -47,7 +47,7 @@ export default function OnboardingPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Readiness / before capital moves
           </p>
-          <h1 className="mt-6 max-w-5xl font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+          <h1 className="mt-6 max-w-5xl font-serif text-3xl font-medium leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
             A wallet proves control. It does not prove eligibility.
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-7 text-muted-foreground">
