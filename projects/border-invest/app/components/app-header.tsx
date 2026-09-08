@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { WalletButton } from "./wallet-button";
+import { useCluster } from "./cluster-context";
 
 export function AppHeader({ accountStorage }: { accountStorage: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cluster } = useCluster();
 
   useEffect(() => {
     function closeOnEscape(event: KeyboardEvent) {
@@ -93,7 +95,7 @@ export function AppHeader({ accountStorage }: { accountStorage: boolean }) {
               aria-hidden="true"
             />
             {accountStorage ? "Account workspace" : "Browser workspace"} /
-            Solana devnet
+            Solana {cluster}
           </span>
           <span className="hidden sm:inline-flex">
             <ThemeToggle />
