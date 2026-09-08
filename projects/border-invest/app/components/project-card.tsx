@@ -4,6 +4,33 @@ import type { InvestmentProject } from "@/src/domain/project";
 import { formatCompactCurrency, formatPercent } from "@/src/lib/format-number";
 import { SaveProjectButton } from "./save-project-button";
 
+const STATUS_STYLES: Record<string, string> = {
+  Published: "bg-primary/10 text-primary",
+  "In progress": "bg-accent text-accent-foreground",
+  "Funding complete": "bg-secondary text-secondary-foreground",
+  Completed: "bg-muted text-muted-foreground",
+};
+
+function statusStyle(status: string) {
+  return STATUS_STYLES[status] ?? "bg-secondary";
+}
+
+function FundingBar({ percent }: { percent: number }) {
+  const clamped = Math.min(100, Math.max(0, percent));
+  return (
+    <div
+      className="h-1.5 w-full bg-secondary"
+      role="presentation"
+      aria-hidden="true"
+    >
+      <div
+        className="h-full bg-primary"
+        style={{ width: `${clamped}%` }}
+      />
+    </div>
+  );
+}
+
 type ProjectCardProps = {
   project: InvestmentProject;
   variant?: "feature" | "row";
@@ -45,7 +72,9 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
             <span className="bg-secondary px-2 py-1">
               {project.fundingModel}
             </span>
-            <span className="bg-secondary px-2 py-1">{project.status}</span>
+            <span className={`px-2 py-1 ${statusStyle(project.status)}`}>
+              {project.status}
+            </span>
             <span className="bg-secondary px-2 py-1">
               Grade {project.riskGrade}
             </span>
@@ -58,6 +87,13 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
             <Metric label="Funded" value={formatPercent(fundedPercent)} />
             <Metric label="Impact" value={project.impactValue} />
           </dl>
+          <div className="mt-4 flex items-center gap-3">
+            <FundingBar percent={fundedPercent} />
+            <span className="whitespace-nowrap text-xs font-medium tabular-nums text-muted-foreground">
+              {formatCompactCurrency(project.fundedUsd)} of{" "}
+              {formatCompactCurrency(project.targetUsd)}
+            </span>
+          </div>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs text-muted-foreground">Operated by</p>
@@ -107,7 +143,15 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
             <span className="bg-secondary px-2 py-1">
               {project.fundingModel}
             </span>
-            <span className="bg-secondary px-2 py-1">{project.status}</span>
+            <span className={`px-2 py-1 ${statusStyle(project.status)}`}>
+              {project.status}
+            </span>
+          </div>
+          <div className="mt-4 flex items-center gap-3">
+            <FundingBar percent={fundedPercent} />
+            <span className="whitespace-nowrap text-xs font-medium tabular-nums text-muted-foreground">
+              {formatPercent(fundedPercent)} funded
+            </span>
           </div>
         </div>
         <dl className="grid grid-cols-2 gap-4 lg:col-span-4 lg:grid-cols-3">

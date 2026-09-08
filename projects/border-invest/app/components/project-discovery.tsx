@@ -7,7 +7,45 @@ import { AETHER_STORAGE_KEYS, useAetherStorage } from "../lib/aether-storage";
 import { ProjectCard } from "./project-card";
 
 type FilterKey =
-  "q" | "country" | "sector" | "cadence" | "model" | "risk" | "saved";
+  | "q"
+  | "country"
+  | "sector"
+  | "cadence"
+  | "model"
+  | "risk"
+  | "saved"
+  | "sort";
+
+type SortKey = "recent" | "funded" | "progress" | "minimum";
+
+const SORT_OPTIONS: Array<{ value: SortKey; label: string }> = [
+  { value: "recent", label: "Recently updated" },
+  { value: "funded", label: "Most funded" },
+  { value: "progress", label: "Closest to target" },
+  { value: "minimum", label: "Lowest entry amount" },
+];
+
+function sortProjects(
+  projects: InvestmentProject[],
+  sort: SortKey
+): InvestmentProject[] {
+  const sorted = [...projects];
+  switch (sort) {
+    case "funded":
+      return sorted.sort((a, b) => b.fundedUsd - a.fundedUsd);
+    case "progress":
+      return sorted.sort(
+        (a, b) =>
+          b.fundedUsd / b.targetUsd - a.fundedUsd / a.targetUsd
+      );
+    case "minimum":
+      return sorted.sort((a, b) => a.minimumUsd - b.minimumUsd);
+    default:
+      return sorted.sort((a, b) =>
+        b.lastUpdated.localeCompare(a.lastUpdated)
+      );
+  }
+}
 
 export function ProjectDiscovery({
   projects,
@@ -27,6 +65,7 @@ export function ProjectDiscovery({
   const cadence = searchParams.get("cadence") ?? "all";
   const model = searchParams.get("model") ?? "all";
   const risk = searchParams.get("risk") ?? "all";
+  const sort = (searchParams.get("sort") as SortKey | null) ?? "recent";
   const savedOnly = searchParams.get("saved") === "1";
   const countries = useMemo(
     () => unique(projects.map((project) => project.country)),
@@ -36,39 +75,45 @@ export function ProjectDiscovery({
     () => unique(projects.map((project) => project.sector)),
     [projects]
   );
-  const filteredProjects = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return projects.filter((project) => {
-      const searchable = [
-        project.name,
-        project.country,
-        project.sector,
-        project.operator,
-        project.summary,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return (
-        (!normalizedQuery || searchable.includes(normalizedQuery)) &&
-        (country === "all" || project.country === country) &&
-        (sector === "all" || project.sector === sector) &&
-        (cadence === "all" || project.fundingCadence === cadence) &&
-        (model === "all" || project.fundingModel === model) &&
-        (risk === "all" || project.riskGrade === risk) &&
-        (!savedOnly || savedProjects.includes(project.slug))
-      );
-    });
-  }, [
-    cadence,
-    country,
-    model,
-    projects,
-    query,
-    risk,
-    savedOnly,
-    savedProjects,
-    sector,
-  ]);
+  const filteredProjects = useMemo(
+    () =>
+      sortProjects(
+        projects.filter((project) => {
+          const normalizedQuery = query.trim().toLowerCase();
+          const searchable = [
+            project.name,
+            project.country,
+            project.sector,
+            project.operator,
+            project.summary,
+          ]
+            .join(" ")
+            .toLowerCase();
+          return (
+            (!normalizedQuery || searchable.includes(normalizedQuery)) &&
+            (country === "all" || project.country === country) &&
+            (sector === "all" || project.sector === sector) &&
+            (cadence === "all" || project.fundingCadence === cadence) &&
+            (model === "all" || project.fundingModel === model) &&
+            (risk === "all" || project.riskGrade === risk) &&
+            (!savedOnly || savedProjects.includes(project.slug))
+          );
+        }),
+        sort
+      ),
+    [
+      cadence,
+      country,
+      model,
+      projects,
+      query,
+      risk,
+      savedOnly,
+      savedProjects,
+      sector,
+      sort,
+    ]
+  );
 
   function updateFilter(key: FilterKey, value: string) {
     const next = new URLSearchParams(searchParams.toString());
@@ -142,6 +187,15 @@ export function ProjectDiscovery({
             value={risk}
             onChange={(value) => updateFilter("risk", value)}
             options={["A", "B", "C"]}
+          />
+          <Filter
+            label="Sort by"
+            value={sort}
+            onChange={(value) => updateFilter("sort", value)}
+            options={SORT_OPTIONS.map((option) => option.value)}
+            optionLabels={Object.fromEntries(
+              SORT_OPTIONS.map((option) => [option.value, option.label])
+            )}
           />
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -232,11 +286,13 @@ function Filter({
   value,
   onChange,
   options,
+  optionLabels,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: string[];
+  optionLabels?: Record<string, string>;
 }) {
   return (
     <label>
@@ -248,10 +304,10 @@ function Filter({
         onChange={(event) => onChange(event.target.value)}
         className="min-h-11 w-full border bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <option value="all">All</option>
+        {label === "Sort by" ? null : <option value="all">All</option>}
         {options.map((option) => (
           <option key={option} value={option}>
-            {option}
+            {optionLabels?.[option] ?? option}
           </option>
         ))}
       </select>
