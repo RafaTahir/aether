@@ -228,23 +228,39 @@ export function ProjectDiscovery({
               onClick={() => updateFilter("saved", savedOnly ? "0" : "1")}
             />
           </div>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="min-h-10 px-2 text-xs font-semibold text-muted-foreground underline decoration-border underline-offset-4 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Clear filters
-          </button>
+          {(query ||
+            country !== "all" ||
+            sector !== "all" ||
+            cadence !== "all" ||
+            model !== "all" ||
+            risk !== "all" ||
+            savedOnly ||
+            sort !== "recent") && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="inline-flex min-h-10 items-center gap-1.5 rounded border border-dashed border-primary/40 bg-primary/5 px-3 text-xs font-semibold text-primary transition-colors hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <span>✕</span> Reset all filters
+            </button>
+          )}
         </div>
       </div>
       <div className="mt-8 flex items-baseline justify-between gap-4">
-        <p className="text-sm text-muted-foreground" aria-live="polite">
-          <span className="font-mono tabular-nums text-foreground">
-            {filteredProjects.length}
-          </span>{" "}
-          {filteredProjects.length === 1 ? "brief" : "briefs"} match your
-          filters.
-        </p>
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-muted-foreground" aria-live="polite">
+            <span className="font-mono font-semibold tabular-nums text-foreground">
+              {filteredProjects.length}
+            </span>{" "}
+            {filteredProjects.length === 1 ? "brief" : "briefs"} match your
+            filters.
+          </p>
+          {filteredProjects.length < projects.length && (
+            <span className="rounded bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
+              Filtered from {projects.length}
+            </span>
+          )}
+        </div>
         <p className="text-xs text-muted-foreground">
           All figures are fictional catalog data.
         </p>

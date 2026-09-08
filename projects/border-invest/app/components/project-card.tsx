@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import type { InvestmentProject } from "@/src/domain/project";
 import { formatCompactCurrency, formatPercent } from "@/src/lib/format-number";
 import { SaveProjectButton } from "./save-project-button";
 
 const STATUS_STYLES: Record<string, string> = {
-  Published: "bg-primary/10 text-primary",
-  "In progress": "bg-accent text-accent-foreground",
-  "Funding complete": "bg-secondary text-secondary-foreground",
-  Completed: "bg-muted text-muted-foreground",
+  Published:
+    "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20",
+  "In progress":
+    "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20",
+  "Funding complete":
+    "bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20",
+  Completed: "bg-muted text-muted-foreground border border-border",
 };
 
 function statusStyle(status: string) {
@@ -19,15 +23,44 @@ function FundingBar({ percent }: { percent: number }) {
   const clamped = Math.min(100, Math.max(0, percent));
   return (
     <div
-      className="h-1.5 w-full bg-secondary"
-      role="presentation"
-      aria-hidden="true"
+      className="h-2 w-full overflow-hidden rounded-full bg-secondary"
+      role="progressbar"
+      aria-valuenow={Math.round(clamped)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={`${Math.round(clamped)}% funded`}
     >
       <div
-        className="h-full bg-primary"
+        className="h-full rounded-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500"
         style={{ width: `${clamped}%` }}
       />
     </div>
+  );
+}
+
+function CopySlugButton({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/projects/${slug}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      title="Copy share link"
+      aria-label="Copy project link"
+      className="inline-flex size-8 items-center justify-center rounded border bg-card text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {copied ? "✓" : "↗"}
+    </button>
   );
 }
 
@@ -54,7 +87,8 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
           <span className="absolute left-4 top-4 bg-card px-3 py-2 text-xs font-semibold">
             Flagship brief
           </span>
-          <div className="absolute right-4 top-4">
+          <div className="absolute right-4 top-4 flex items-center gap-2">
+            <CopySlugButton slug={project.slug} />
             <SaveProjectButton projectSlug={project.slug} />
           </div>
         </div>
@@ -77,6 +111,9 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
             </span>
             <span className="bg-secondary px-2 py-1">
               Grade {project.riskGrade}
+            </span>
+            <span className="bg-secondary px-2 py-1">
+              Min {formatCompactCurrency(project.minimumUsd)}
             </span>
           </div>
           <dl className="mt-6 grid grid-cols-3 gap-4 border-y py-5">
@@ -113,7 +150,8 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
 
   return (
     <article className="project-link group relative border-t">
-      <div className="absolute right-0 top-6 z-10">
+      <div className="absolute right-0 top-6 z-10 flex items-center gap-2">
+        <CopySlugButton slug={project.slug} />
         <SaveProjectButton projectSlug={project.slug} />
       </div>
       <Link
@@ -145,6 +183,9 @@ export function ProjectCard({ project, variant = "row" }: ProjectCardProps) {
             </span>
             <span className={`px-2 py-1 ${statusStyle(project.status)}`}>
               {project.status}
+            </span>
+            <span className="bg-secondary px-2 py-1">
+              Grade {project.riskGrade}
             </span>
           </div>
           <div className="mt-4 flex items-center gap-3">

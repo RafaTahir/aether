@@ -91,11 +91,16 @@ export default async function ProjectPage({
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="bg-secondary px-2 py-1">{project.status}</span>
-              <span className="bg-secondary px-2 py-1">
+              <span className="rounded border border-primary/20 bg-primary/10 px-2.5 py-1 text-primary">
+                {project.status}
+              </span>
+              <span className="rounded bg-secondary px-2.5 py-1">
                 {project.fundingModel}
               </span>
-              <span className="bg-secondary px-2 py-1">
+              <span className="rounded bg-secondary px-2.5 py-1">
+                Min {formatCompactCurrency(project.minimumUsd)}
+              </span>
+              <span className="rounded bg-secondary px-2.5 py-1 text-muted-foreground">
                 Updated {project.lastUpdated}
               </span>
             </div>
@@ -219,9 +224,9 @@ export default async function ProjectPage({
 
           <section className="grid gap-6 py-12 md:grid-cols-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-destructive">
-                Read before proceeding
-              </p>
+              <div className="inline-flex items-center gap-1.5 rounded bg-destructive/10 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-destructive">
+                <span>⚠</span> Read before proceeding
+              </div>
               <h2 className="mt-3 font-serif text-3xl font-medium">
                 Material risks
               </h2>
@@ -230,9 +235,10 @@ export default async function ProjectPage({
               {project.risks.map((risk) => (
                 <li
                   key={risk}
-                  className="border-t py-4 text-sm leading-6 text-muted-foreground first:border-t-0"
+                  className="flex items-start gap-3 border-t py-4 text-sm leading-6 text-muted-foreground first:border-t-0"
                 >
-                  {risk}
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-destructive/60" aria-hidden="true" />
+                  <span>{risk}</span>
                 </li>
               ))}
             </ul>
