@@ -1180,7 +1180,7 @@ export const projects: InvestmentProject[] = [
     description:
       "A fictional grant-funded infrastructure project designed to install solar icemakers and cold storage at two landing sites with cooperative-managed operations.",
     image:
-      "https://images.unsplash.com/photo-1498654896293-37aacf1133dd?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1601948462966-fa28a4638d93?auto=format&fit=crop&w=1800&q=85",
     imageAlt: "Wooden fishing boats moored near a small port",
     targetUsd: 210000,
     fundedUsd: 84000,
